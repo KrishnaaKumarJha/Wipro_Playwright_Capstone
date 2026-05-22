@@ -1,6 +1,6 @@
 // @ts-check
 import { test, expect } from '@playwright/test';
-import { dismissCookieAndPopups } from './helpers/ikea-helpers.js';
+import { dismissCookieAndPopups } from './helpers/modules/homepage-navigation.helper.js';
 
 test.describe('Module 1 — Homepage & Navigation', () => {
   test.beforeEach(async ({ page }) => {
@@ -85,7 +85,7 @@ test.describe('Module 1 — Homepage & Navigation', () => {
     if (await cta.isVisible()) {
       // Use force: true to bypass any fading cookie banners that might intercept the click on WebKit
       await cta.click({ force: true });
-      await page.waitForLoadState('networkidle');
+      await page.waitForLoadState('domcontentloaded');
       expect(page.url()).toBeTruthy();
     }
   });
@@ -124,7 +124,7 @@ test.describe('Module 1 — Homepage & Navigation', () => {
       const tile = page.locator('a[href*="/cat/"]').nth(i);
       if (await tile.isVisible()) {
         await tile.click();
-        await page.waitForLoadState('networkidle');
+        await page.waitForLoadState('domcontentloaded');
         expect(page.url()).toContain('/in/en/');
       }
     }

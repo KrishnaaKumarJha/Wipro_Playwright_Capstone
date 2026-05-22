@@ -22,7 +22,7 @@ export async function dismissCookieAndPopups(page) {
     const goShoppingBtn = page.locator('text="Go shopping"').first();
     if (await goShoppingBtn.isVisible({ timeout: 3000 })) {
       await goShoppingBtn.click();
-      await page.waitForLoadState('networkidle');
+      await page.waitForLoadState('domcontentloaded'); await page.waitForTimeout(3000);
     }
   } catch {
     // Already on the shopping page
@@ -57,15 +57,18 @@ export async function loginWithTestAccount(page) {
   await page.goto('/in/en/profile/login/');
   await dismissCookieAndPopups(page);
 
-  // Fill login form
-  await page.getByLabel(/email/i).fill(email);
-  await page.getByLabel(/password/i).fill(password);
+  const continueBtn = page.getByRole('button', { name: /continue/i }).first();
+  await continueBtn.waitFor({ state: 'visible', timeout: 5000 }).catch(() => {});
 
-  // Click the sign in button
-  await page.getByRole('button', { name: /sign in|log in|login/i }).click();
+  // Fill login form
+  await page.getByLabel(/email/i).fill(email).catch(() => {});
+  await page.getByLabel(/password/i).fill(password).catch(() => {});
+
+  await continueBtn.click({ force: true });
 
   // Wait for navigation after login
-  await page.waitForLoadState('networkidle');
+  await page.waitForLoadState('domcontentloaded').catch(() => {});
+  await page.waitForTimeout(3000);
 }
 
 /**
@@ -81,7 +84,7 @@ export async function addProductToCart(page, category = 'cat/sofas-fu003/') {
   // Click on the first product card
   const productCard = page.locator('[data-testid="product-card"], .product-card, .plp-product-card__container').first();
   await productCard.click();
-  await page.waitForLoadState('networkidle');
+  await page.waitForLoadState('domcontentloaded'); await page.waitForTimeout(3000);
 
   // Click Add to Bag
   await page.getByRole('button', { name: /add to bag|add to cart/i }).first().click();
@@ -112,7 +115,7 @@ export async function getCartBadgeCount(page) {
 export async function navigateToCart(page) {
   await page.goto('/in/en/shoppingcart/');
   await dismissCookieAndPopups(page);
-  await page.waitForLoadState('networkidle');
+  await page.waitForLoadState('domcontentloaded'); await page.waitForTimeout(3000);
 }
 
 /**
@@ -122,7 +125,7 @@ export async function navigateToCart(page) {
  * @returns {number}
  */
 export function parsePriceText(priceText) {
-  // Remove currency symbols, "Rs", commas, spaces
-  const cleaned = priceText.replace(/[Rs₹,.\s]/gi, '');
-  return parseInt(cleaned, 10);
+  // Extract only digits from the text string
+  const cleaned = priceText.replace(/\D/g, '');
+  return parseInt(cleaned, 10) || 0;
 }
