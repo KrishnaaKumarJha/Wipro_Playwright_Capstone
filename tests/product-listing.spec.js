@@ -167,8 +167,25 @@ test.describe('Module 4 — Product Listing & Filters', () => {
     const success = await selectSortOption(page, /price.*low|low.*high/i);
     if (success) {
       await page.waitForLoadState('domcontentloaded');
-      // Navigate to page 2
-      const page2Link = page.locator('a:has-text("2"), button:has-text("2"), [aria-label="Page 2"]').first();
+      // Navigate to page 2 (robustly targeting pagination elements instead of general links containing "2")
+      let page2Link = page.locator([
+        '.plp-pagination a:has-text("2")',
+        '.pagination a:has-text("2")',
+        '[class*="pagination"] a:has-text("2")',
+        '[class*="pagination"] button:has-text("2")',
+        'a[aria-label="Page 2"]',
+        'button[aria-label="Page 2"]',
+        'a[aria-label*="page 2" i]',
+        'button[aria-label*="page 2" i]'
+      ].join(', ')).first();
+
+      if (!(await page2Link.isVisible())) {
+        const exact2 = page.locator('a, button').filter({ hasText: /^\s*2\s*$/ }).first();
+        if (await exact2.isVisible()) {
+          page2Link = exact2;
+        }
+      }
+
       if (await page2Link.isVisible({ timeout: 5000 })) {
         await page2Link.click();
         await page.waitForLoadState('domcontentloaded');
@@ -182,7 +199,26 @@ test.describe('Module 4 — Product Listing & Filters', () => {
     const page1Cards = page.locator(PRODUCT_CARDS_SELECTOR);
     await page1Cards.first().waitFor({ state: 'visible', timeout: 15000 }).catch(() => {});
     const page1First = await page1Cards.first().textContent().catch(() => '');
-    const page2Link = page.locator('a:has-text("2"), button:has-text("2"), [aria-label="Page 2"]').first();
+    
+    // Navigate to page 2
+    let page2Link = page.locator([
+      '.plp-pagination a:has-text("2")',
+      '.pagination a:has-text("2")',
+      '[class*="pagination"] a:has-text("2")',
+      '[class*="pagination"] button:has-text("2")',
+      'a[aria-label="Page 2"]',
+      'button[aria-label="Page 2"]',
+      'a[aria-label*="page 2" i]',
+      'button[aria-label*="page 2" i]'
+    ].join(', ')).first();
+
+    if (!(await page2Link.isVisible())) {
+      const exact2 = page.locator('a, button').filter({ hasText: /^\s*2\s*$/ }).first();
+      if (await exact2.isVisible()) {
+        page2Link = exact2;
+      }
+    }
+
     if (await page2Link.isVisible({ timeout: 5000 })) {
       await page2Link.click();
       await page.waitForLoadState('domcontentloaded');
