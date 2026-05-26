@@ -57,20 +57,19 @@ test.describe('Module 2 — Authentication & User Account', () => {
 
     const passwordField = page.getByLabel(/password/i).first();
     const confirmPasswordField = page.getByLabel(/confirm password/i).first();
-    if (await passwordField.isVisible({ timeout: 2000 }) && await confirmPasswordField.isVisible({ timeout: 2000 })) {
-      await page.getByLabel(/first name/i).fill('Test');
-      await page.getByLabel(/surname/i).fill('User');
-      await page.getByLabel(/email/i).first().fill(`test_${Date.now()}@mail.com`);
-      await passwordField.fill('Test@12345');
-      await confirmPasswordField.fill('DifferentPass@999');
-      await page.getByRole('button', { name: /continue|create|register/i }).first().dispatchEvent('click');
-      await page.waitForTimeout(2000);
-      const body = await page.textContent('body');
-      expect(/do not match|password.*match|mismatch/i.test(body || '')).toBeTruthy();
-    } else {
-      console.log('Skipping password mismatch test as password fields are not present on the registration form.');
-      expect(true).toBe(true);
-    }
+    const hasPasswordFields = await passwordField.isVisible({ timeout: 2000 }) && await confirmPasswordField.isVisible({ timeout: 2000 });
+    
+    test.skip(!hasPasswordFields, 'Password fields are not present on the registration form');
+
+    await page.getByLabel(/first name/i).fill('Test');
+    await page.getByLabel(/surname/i).fill('User');
+    await page.getByLabel(/email/i).first().fill(`test_${Date.now()}@mail.com`);
+    await passwordField.fill('Test@12345');
+    await confirmPasswordField.fill('DifferentPass@999');
+    await page.getByRole('button', { name: /continue|create|register/i }).first().dispatchEvent('click');
+    await page.waitForTimeout(2000);
+    const body = await page.textContent('body');
+    expect(/do not match|password.*match|mismatch/i.test(body || '')).toBeTruthy();
   });
 
   test('TC_AU_005 — Login actually submits credentials to IKEA auth', async ({ page }) => {
@@ -172,18 +171,17 @@ test.describe('Module 2 — Authentication & User Account', () => {
 
     // Open account menu and click Sign Out if visible
     const userMenu = page.locator('[data-testid="user-menu"], [aria-label*="account" i], [aria-label*="profile" i]').first();
-    if (await userMenu.isVisible({ timeout: 5000 })) {
-      await userMenu.dispatchEvent('click');
-      await page.waitForTimeout(1000);
-      await page.getByRole('link', { name: /sign out|log out|logout/i }).first().dispatchEvent('click');
-      await page.waitForLoadState('domcontentloaded').catch(() => {}); await page.waitForTimeout(3000);
+    const hasUserMenu = await userMenu.isVisible({ timeout: 5000 });
 
-      const header = await page.locator('header').textContent({ timeout: 2000 }).catch(() => '');
-      expect(/log in|sign in|login|hej/i.test(header || '') || !(/my account/i.test(header || ''))).toBeTruthy();
-    } else {
-      console.log('Skipping logout click as user menu was not visible (headless login intercepted).');
-      expect(true).toBe(true);
-    }
+    test.skip(!hasUserMenu, 'User menu was not visible (headless login intercepted by bot challenge)');
+
+    await userMenu.dispatchEvent('click');
+    await page.waitForTimeout(1000);
+    await page.getByRole('link', { name: /sign out|log out|logout/i }).first().dispatchEvent('click');
+    await page.waitForLoadState('domcontentloaded').catch(() => {}); await page.waitForTimeout(3000);
+
+    const header = await page.locator('header').textContent({ timeout: 2000 }).catch(() => '');
+    expect(/log in|sign in|login|hej/i.test(header || '') || !(/my account/i.test(header || ''))).toBeTruthy();
   });
 
   test('TC_AU_013 — Accessing profile without login redirects to login', async ({ page }) => {

@@ -125,7 +125,18 @@ export async function navigateToCart(page) {
  * @returns {number}
  */
 export function parsePriceText(priceText) {
-  // Extract only digits from the text string
+  if (!priceText) return 0;
+  // Match currency prefix followed by numbers and commas
+  const match = priceText.match(/(?:Rs\.?|₹)\s*([\d,]+)/i);
+  if (match) {
+    return parseInt(match[1].replace(/,/g, ''), 10);
+  }
+  // Fallback: match any number block that is longer than 2 digits (avoid quantity numbers like 1, 2, 3)
+  const fallbackMatch = priceText.match(/\d{3,}/);
+  if (fallbackMatch) {
+    return parseInt(fallbackMatch[0], 10);
+  }
+  // Last resort: extract all digits
   const cleaned = priceText.replace(/\D/g, '');
   return parseInt(cleaned, 10) || 0;
 }

@@ -13,8 +13,7 @@ test.describe('Module 4 — Product Listing & Filters', () => {
   test('TC_PL_001 — Category displays only products in that category', async ({ page }) => {
     const body = await page.textContent('body').catch(() => '');
     if (/refresh automatically|just a moment|verifying/i.test(body || '')) {
-      console.log('Skipping category products display assertion due to Turnstile/Akamai bot interception.');
-      expect(true).toBe(true);
+      test.skip(true, 'Turnstile/Akamai bot challenge intercepted the page');
       return;
     }
     const heading = await page.textContent('h1').catch(() => '');
