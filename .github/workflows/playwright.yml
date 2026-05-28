@@ -42,7 +42,7 @@ jobs:
       uses: actions/cache@v4
       with:
         path: ~/.cache/ms-playwright
-        key: playwright-browsers-${{ runner.os }}-${{ hashFiles('Day21/package-lock.json') }}
+        key: playwright-browsers-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
         restore-keys: |
           playwright-browsers-${{ runner.os }}-
 
@@ -90,11 +90,11 @@ jobs:
       uses: actions/download-artifact@v4
       with:
         pattern: allure-results-shard-*
-        merge-multiple: false
+        merge-multiple: true
         path: allure-results
 
     - name: Ensure Allure Results Directory
-      run: mkdir allure-results
+      run: mkdir -p allure-results
 
     - name: Generate Allure Report
       run: npm run allure:generate
