@@ -141,3 +141,24 @@ export function parsePriceText(priceText) {
   const cleaned = priceText.replace(/\D/g, '');
   return parseInt(cleaned, 10) || 0;
 }
+
+/**
+ * Checks for Turnstile challenge and skips test if it is not solved.
+ * @param {import('@playwright/test').Page} page
+ */
+export async function handleTurnstileGracefully(page) {
+  try {
+    const body = await page.textContent('body').catch(() => '');
+    if (/refresh automatically|just a moment|verifying/i.test(body || '')) {
+      await page.locator('text="The page will refresh automatically"').waitFor({ state: 'hidden', timeout: 25000 }).catch(() => {});
+      const body2 = await page.textContent('body').catch(() => '');
+      if (/refresh automatically|just a moment|verifying/i.test(body2 || '')) {
+        const { test } = await import('@playwright/test');
+        test.skip(true, 'Turnstile/Akamai bot challenge intercepted the page');
+      }
+    }
+  } catch {
+    // Safe to ignore if outside test context
+  }
+}
+
