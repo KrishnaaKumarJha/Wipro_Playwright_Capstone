@@ -16,9 +16,6 @@ jobs:
   test:
     timeout-minutes: 60
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: Day21
     strategy:
       fail-fast: false
       matrix:
@@ -97,7 +94,7 @@ jobs:
         path: allure-results
 
     - name: Ensure Allure Results Directory
-      run: mkdir -p Day21/allure-results
+      run: mkdir allure-results
 
     - name: Generate Allure Report
       run: npm run allure:generate
@@ -118,5 +115,5 @@ jobs:
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_branch: gh-pages
-        publish_dir: Day21/allure-report
+        publish_dir: allure-report
       continue-on-error: true
