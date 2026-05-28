@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 import { dismissCookieAndPopups, loginWithTestAccount, parsePriceText, goToFirstProduct, handleTurnstileGracefully } from './helpers/modules/product-details.helper.js';
 
 test.describe('Module 5 — Product Details', () => {
-  const PRODUCT_CARDS_SELECTOR = '.pip-product-compact, .plp-fragment-wrapper, [data-testid="plp-product-card"], [data-testid="product-card"], .product-card, .item-card, .plp-product-card__container';
+  const PRODUCT_CARDS_SELECTOR = '.plp-product-compact, .pip-product-compact, .plp-fragment-wrapper, [data-testid="plp-product-card"], [data-testid="product-card"], .product-card, .item-card, .plp-product-card__container';
 
   test('TC_PD_001 — Product page shows name, article number, price, description', async ({ page }) => {
     await goToFirstProduct(page);

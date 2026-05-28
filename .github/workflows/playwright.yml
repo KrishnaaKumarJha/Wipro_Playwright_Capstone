@@ -105,7 +105,7 @@ jobs:
         retention-days: 7
 
     - name: Deploy to GitHub Pages
-      if: always() && github.event_name == 'push' && (github.ref_name == 'main' || github.ref_name == 'master')
+      if: always() && (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && (github.ref_name == 'main' || github.ref_name == 'master')
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}

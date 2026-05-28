@@ -7,7 +7,7 @@ import {
   parsePriceText as baseParsePriceText
 } from '../ikea-helpers.js';
 
-const PRODUCT_CARDS_SELECTOR = '.pipf-product-compact, .pip-product-compact, .plp-fragment-wrapper, [data-testid="plp-product-card"], [data-testid="product-card"], .product-card, .item-card, .plp-product-card__container';
+const PRODUCT_CARDS_SELECTOR = '.plp-product-compact, .pipf-product-compact, .pip-product-compact, .plp-fragment-wrapper, [data-testid="plp-product-card"], [data-testid="product-card"], .product-card, .item-card, .plp-product-card__container';
 
 const FALLBACK_PRODUCTS = {
   sofas: '/in/en/p/glostad-3-seat-sofa-knisa-dark-grey-40595937/',

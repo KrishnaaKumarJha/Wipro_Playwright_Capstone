@@ -4,7 +4,7 @@ import { dismissCookieAndPopups, gotoCategoryPage, selectSortOption } from './he
 
 test.describe('Module 4 — Product Listing & Filters', () => {
   const CATEGORY_URL = '/in/en/cat/sofas-fu003/';
-  const PRODUCT_CARDS_SELECTOR = '.pip-product-compact, .plp-fragment-wrapper, [data-testid="plp-product-card"], [data-testid="product-card"], .product-card, .item-card, .plp-product-card__container';
+  const PRODUCT_CARDS_SELECTOR = '.plp-product-compact, .pip-product-compact, .plp-fragment-wrapper, [data-testid="plp-product-card"], [data-testid="product-card"], .product-card, .item-card, .plp-product-card__container';
 
   test.beforeEach(async ({ page }) => {
     await gotoCategoryPage(page, CATEGORY_URL);

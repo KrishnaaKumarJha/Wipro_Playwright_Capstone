@@ -82,7 +82,7 @@ export async function addProductToCart(page, category = 'cat/sofas-fu003/') {
   await dismissCookieAndPopups(page);
 
   // Click on the first product card
-  const productCard = page.locator('[data-testid="product-card"], .product-card, .plp-product-card__container').first();
+  const productCard = page.locator('.plp-product-compact, .pip-product-compact, .plp-fragment-wrapper, [data-testid="product-card"], .product-card, .plp-product-card__container').first();
   await productCard.click();
   await page.waitForLoadState('domcontentloaded'); await page.waitForTimeout(3000);
 

@@ -13,7 +13,7 @@ test.describe('Module 3 — Search Functionality', () => {
     await performSearch(page, 'sofa');
     const body = await page.textContent('body', { timeout: 5000 }).catch(() => '');
     expect(body?.toLowerCase()).toContain('sofa');
-    const cards = page.locator('.pip-product-compact, .plp-fragment-wrapper, [data-testid="plp-product-card"], [data-testid="product-card"], .product-card, .item-card, .plp-product-card__container');
+    const cards = page.locator('.plp-product-compact, .pip-product-compact, .plp-fragment-wrapper, [data-testid="plp-product-card"], [data-testid="product-card"], .product-card, .item-card, .plp-product-card__container');
     expect(await cards.count()).toBeGreaterThan(0);
   });
 
@@ -23,7 +23,7 @@ test.describe('Module 3 — Search Functionality', () => {
     if (await countText.isVisible({ timeout: 5000 })) {
       const text = await countText.textContent();
       const stated = parseInt((text || '').replace(/[^0-9]/g, ''), 10);
-      const cards = page.locator('.pip-product-compact, .plp-fragment-wrapper, [data-testid="plp-product-card"], [data-testid="product-card"], .product-card, .item-card, .plp-product-card__container');
+      const cards = page.locator('.plp-product-compact, .pip-product-compact, .plp-fragment-wrapper, [data-testid="plp-product-card"], [data-testid="product-card"], .product-card, .item-card, .plp-product-card__container');
       const rendered = await cards.count();
       // They should match (on first page at least)
       expect(rendered).toBeGreaterThan(0);
@@ -43,7 +43,7 @@ test.describe('Module 3 — Search Functionality', () => {
         test.skip(true, `Turnstile/Akamai bot interception during case-insensitive count check for "${q}"`);
         return;
       }
-      const cards = page.locator('.pip-product-compact, .plp-fragment-wrapper, [data-testid="plp-product-card"], [data-testid="product-card"], .product-card, .item-card, .plp-product-card__container');
+      const cards = page.locator('.plp-product-compact, .pip-product-compact, .plp-fragment-wrapper, [data-testid="plp-product-card"], [data-testid="product-card"], .product-card, .item-card, .plp-product-card__container');
       try { counts.push(await cards.count()); } catch(e) { counts.push(0); }
     }
     if (counts.length === 3) {
@@ -61,7 +61,7 @@ test.describe('Module 3 — Search Functionality', () => {
       test.skip(true, 'Turnstile/Akamai bot challenge intercepted the page');
       return;
     }
-    const cards = page.locator('.pip-product-compact, .plp-fragment-wrapper, [data-testid="plp-product-card"], [data-testid="product-card"], .product-card, .item-card, .plp-product-card__container');
+    const cards = page.locator('.plp-product-compact, .pip-product-compact, .plp-fragment-wrapper, [data-testid="plp-product-card"], [data-testid="product-card"], .product-card, .item-card, .plp-product-card__container');
     expect(await cards.count() > 0 || /no results|no products/i.test(body || '')).toBeTruthy();
   });
 
@@ -81,7 +81,7 @@ test.describe('Module 3 — Search Functionality', () => {
 
   test('TC_SR_007 — Result cards show name, image, and price', async ({ page }) => {
     await performSearch(page, 'table');
-    const cards = page.locator('.pip-product-compact, .plp-fragment-wrapper, [data-testid="plp-product-card"], [data-testid="product-card"], .product-card, .item-card, .plp-product-card__container');
+    const cards = page.locator('.plp-product-compact, .pip-product-compact, .plp-fragment-wrapper, [data-testid="plp-product-card"], [data-testid="product-card"], .product-card, .item-card, .plp-product-card__container');
     const count = Math.min(await cards.count(), 3);
     for (let i = 0; i < count; i++) {
       const card = cards.nth(i);
@@ -98,7 +98,7 @@ test.describe('Module 3 — Search Functionality', () => {
 
   test('TC_SR_008 — Search results persist after refresh', async ({ page }) => {
     await performSearch(page, 'bed');
-    const cardsBefore = await page.locator('.pip-product-compact, .plp-fragment-wrapper, [data-testid="plp-product-card"], [data-testid="product-card"], .product-card, .item-card, .plp-product-card__container').count();
+    const cardsBefore = await page.locator('.plp-product-compact, .pip-product-compact, .plp-fragment-wrapper, [data-testid="plp-product-card"], [data-testid="product-card"], .product-card, .item-card, .plp-product-card__container').count();
     
     const bodyBefore = await page.textContent('body').catch(() => '');
     if (/refresh automatically|just a moment|verifying/i.test(bodyBefore || '')) {
@@ -115,7 +115,7 @@ test.describe('Module 3 — Search Functionality', () => {
       return;
     }
 
-    const cardsAfter = await page.locator('.pip-product-compact, .plp-fragment-wrapper, [data-testid="plp-product-card"], [data-testid="product-card"], .product-card, .item-card, .plp-product-card__container').count();
+    const cardsAfter = await page.locator('.plp-product-compact, .pip-product-compact, .plp-fragment-wrapper, [data-testid="plp-product-card"], [data-testid="product-card"], .product-card, .item-card, .plp-product-card__container').count();
     if (cardsBefore > 0 && cardsAfter > 0) {
       expect(cardsAfter).toBe(cardsBefore);
     } else {
@@ -126,7 +126,7 @@ test.describe('Module 3 — Search Functionality', () => {
 
   test('TC_SR_009 — Clicking result navigates to product detail', async ({ page }) => {
     await performSearch(page, 'KALLAX');
-    const firstCard = page.locator('.pip-product-compact a, .plp-fragment-wrapper a, [data-testid="plp-product-card"] a, [data-testid="product-card"] a, .product-card a, .plp-product-card__container a').first();
+    const firstCard = page.locator('.plp-product-compact a, .pip-product-compact a, .plp-fragment-wrapper a, [data-testid="plp-product-card"] a, [data-testid="product-card"] a, .product-card a, .plp-product-card__container a').first();
     await firstCard.dispatchEvent('click');
     await page.waitForLoadState('domcontentloaded');
     const body = await page.textContent('body');
@@ -150,7 +150,7 @@ test.describe('Module 3 — Search Functionality', () => {
     await performSearch(page, 'bed');
     const body = await page.textContent('body');
     // Results should be for 'bed', not 'sofa'
-    const cards = page.locator('.pip-product-compact, .plp-fragment-wrapper, [data-testid="plp-product-card"], [data-testid="product-card"], .product-card, .item-card, .plp-product-card__container');
+    const cards = page.locator('.plp-product-compact, .pip-product-compact, .plp-fragment-wrapper, [data-testid="plp-product-card"], [data-testid="product-card"], .product-card, .item-card, .plp-product-card__container');
     expect(await cards.count()).toBeGreaterThan(0);
     expect(page.url().toLowerCase()).toContain('bed');
   });

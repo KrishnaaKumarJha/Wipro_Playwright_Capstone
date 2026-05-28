@@ -1,7 +1,7 @@
 import { test } from '@playwright/test';
 import { dismissCookieAndPopups, loginWithTestAccount, parsePriceText } from '../ikea-helpers.js';
 
-const PRODUCT_CARDS_SELECTOR = '.pip-product-compact, .plp-fragment-wrapper, [data-testid="plp-product-card"], [data-testid="product-card"], .product-card, .item-card, .plp-product-card__container';
+const PRODUCT_CARDS_SELECTOR = '.plp-product-compact, .pip-product-compact, .plp-fragment-wrapper, [data-testid="plp-product-card"], [data-testid="product-card"], .product-card, .item-card, .plp-product-card__container';
 
 /**
  * Checks for Turnstile challenge and skips test if it is not solved.
