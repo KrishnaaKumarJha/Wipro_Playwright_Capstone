@@ -1,0 +1,498 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: product-details.spec.js >> Module 5 — Product Details >> TC_PD_004 — Add to Bag increments cart by selected quantity
+- Location: tests/product-details.spec.js:71:7
+
+# Error details
+
+```
+TimeoutError: locator.textContent: Timeout 15000ms exceeded.
+Call log:
+  - waiting for locator('input[type="number"], input[type="text"], select, [class*="quantity"] input, [class*="quantity"] select').first()
+
+```
+
+# Page snapshot
+
+```yaml
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - link "Skip to main content":
+      - /url: "#hnf-content"
+      - generic:
+        - generic: Skip to main content
+    - banner [ref=e3]:
+      - generic [ref=e5]:
+        - button "Change language or country/region, current language is English" [ref=e7] [cursor=pointer]:
+          - generic:
+            - img
+            - generic: INEnglish
+        - link "1800 419 4532 for Shopping & Design assistance" [ref=e10] [cursor=pointer]:
+          - /url: https://www.ikea.com/in/en/customer-service/shopping-at-ikea/remote-shopping/
+          - img [ref=e11]
+          - generic [ref=e13]: 1800 419 4532 for Shopping & Design assistance
+        - generic [ref=e14]:
+          - button "Enter postal code" [ref=e16] [cursor=pointer]:
+            - generic:
+              - img
+              - generic: Enter postal code
+          - button "Select store" [ref=e17] [cursor=pointer]:
+            - generic:
+              - img
+              - generic: Select store
+      - generic [ref=e19]:
+        - link "IKEA Home" [ref=e21] [cursor=pointer]:
+          - /url: https://www.ikea.com/in/en/
+        - navigation "Open the navigation menu" [ref=e24]:
+          - button "Products" [ref=e25] [cursor=pointer]
+          - button "Rooms" [ref=e26] [cursor=pointer]
+          - button "Offers" [ref=e27] [cursor=pointer]
+          - button "Inspiration" [ref=e28] [cursor=pointer]
+          - button "Design/Support" [ref=e29] [cursor=pointer]
+        - search [ref=e35]:
+          - generic [ref=e36]:
+            - img
+            - combobox "Search for products, inspiration or new arrivals" [ref=e37]
+            - button "Search IKEA products using a photo" [ref=e39] [cursor=pointer]:
+              - generic:
+                - img
+                - generic: Search IKEA products using a photo
+        - navigation "Shopping links" [ref=e40]:
+          - list [ref=e41]:
+            - listitem [ref=e42]:
+              - link "Hej! Log in" [ref=e44] [cursor=pointer]:
+                - /url: https://www.ikea.com/in/en/profile/login
+                - generic:
+                  - img
+                  - generic: Hej! Log in
+            - listitem [ref=e45]:
+              - link "Shopping list" [ref=e47] [cursor=pointer]:
+                - /url: https://www.ikea.com/in/en/favourites/
+                - generic:
+                  - img
+                  - generic: Shopping list
+            - listitem [ref=e48]:
+              - link "Shopping bag" [ref=e50] [cursor=pointer]:
+                - /url: https://www.ikea.com/in/en/shoppingcart/
+                - generic:
+                  - img
+                  - generic: Shopping bag
+    - generic:
+      - complementary "Floating action buttons"
+  - main [ref=e51]:
+    - generic [ref=e54]:
+      - generic:
+        - generic:
+          - status
+        - generic:
+          - button [active]:
+            - generic:
+              - img
+              - generic: Close notification
+      - generic [ref=e56]:
+        - heading "Your shopping bag is empty" [level=1] [ref=e58]
+        - paragraph [ref=e59]: When you add products to your shopping bag, they will appear here.
+        - paragraph [ref=e60]: Can’t find your products? Make sure you’re logged in.
+        - generic [ref=e61]:
+          - button "Log in" [ref=e62] [cursor=pointer]:
+            - generic [ref=e64]: Log in
+          - button "Add by article number" [ref=e65] [cursor=pointer]:
+            - generic [ref=e67]: Add by article number
+  - generic [ref=e69]:
+    - complementary [ref=e70]:
+      - paragraph [ref=e71]: Tell us about your experience!
+      - button "Share feedback" [ref=e72] [cursor=pointer]:
+        - generic:
+          - generic: Share feedback
+    - contentinfo [ref=e73]:
+      - generic [ref=e74]:
+        - heading "Footer" [level=2] [ref=e75]
+        - generic [ref=e76]:
+          - generic [ref=e77]:
+            - generic [ref=e78]:
+              - heading "Join IKEA Family" [level=3] [ref=e79]
+              - paragraph [ref=e81]: Enjoy member-only discounts & offers, early access to IKEA sale, delicious food offers and much more. Join for free.
+              - paragraph [ref=e82]:
+                - link "See more" [ref=e83] [cursor=pointer]:
+                  - /url: https://www.ikea.com/in/en/ikea-family/
+              - link "Join the club" [ref=e84] [cursor=pointer]:
+                - /url: https://www.ikea.com/in/en/profile/signup/?itm_campaign=ikeafamily_signup&itm_element=footercta&itm_content=ikeafamily
+                - generic:
+                  - generic: Join the club
+            - generic [ref=e85]:
+              - heading "IKEA Business Network" [level=3] [ref=e86]
+              - paragraph [ref=e88]: Join the membership program for business customers with exciting benefits and features. Join us for free and enjoy member discounts, quick-fix tips, online tutorials and a lot more.
+              - paragraph [ref=e89]:
+                - link "See more" [ref=e90] [cursor=pointer]:
+                  - /url: https://www.ikea.com/in/en/ikea-business/
+              - link "Join now" [ref=e91] [cursor=pointer]:
+                - /url: https://in.accounts.ikea.com/en/identity/biz-signup/network/
+                - generic:
+                  - generic: Join now
+          - list [ref=e93]:
+            - listitem [ref=e94]:
+              - heading "IKEA Family" [level=3] [ref=e95]:
+                - generic: IKEA Family
+              - list "IKEA Family Log in Join IKEA Family Member offers Workshops & Events" [ref=e96]:
+                - listitem [ref=e97]:
+                  - link "Log in" [ref=e98] [cursor=pointer]:
+                    - /url: https://www.ikea.com/in/en/profile/login
+                - listitem [ref=e99]:
+                  - link "Join IKEA Family" [ref=e100] [cursor=pointer]:
+                    - /url: https://www.ikea.com/in/en/profile/signup/family/
+                - listitem [ref=e101]:
+                  - link "Member offers" [ref=e102] [cursor=pointer]:
+                    - /url: https://www.ikea.com/in/en/offers/family-offers/
+                - listitem [ref=e103]:
+                  - link "Workshops & Events" [ref=e104] [cursor=pointer]:
+                    - /url: https://www.ikea.com/in/en/stores/events/#/store
+            - listitem [ref=e105]:
+              - heading "Services" [level=3] [ref=e106]:
+                - generic: Services
+              - list "Services Delivery Service Click & collect Personal shopper Online planning tool Assembly Service Measuring Service Kitchen Planning Installation Service Track & manage your order Customer Service Recycle Program" [ref=e107]:
+                - listitem [ref=e108]:
+                  - link "Delivery Service" [ref=e109] [cursor=pointer]:
+                    - /url: https://www.ikea.com/in/en/customer-service/delivery-service-pubd5889e60/
+                - listitem [ref=e110]:
+                  - link "Click & collect" [ref=e111] [cursor=pointer]:
+                    - /url: https://www.ikea.com/in/en/customer-service/services/click-and-collect-shopping-at-ikea-stores-pubada7dae3/
+                - listitem [ref=e112]:
+                  - link "Personal shopper" [ref=e113] [cursor=pointer]:
+                    - /url: https://www.ikea.com/in/en/customer-service/services/personal-shopper-pubdc2b0ed0/
+                - listitem [ref=e114]:
+                  - link "Online planning tool" [ref=e115] [cursor=pointer]:
+                    - /url: https://www.ikea.com/in/en/planners/
+                - listitem [ref=e116]:
+                  - link "Assembly Service" [ref=e117] [cursor=pointer]:
+                    - /url: https://www.ikea.com/in/en/customer-service/services/assembly/
+                - listitem [ref=e118]:
+                  - link "Measuring Service" [ref=e119] [cursor=pointer]:
+                    - /url: https://www.ikea.com/in/en/customer-service/measuring-service-pub2ecf8410/
+                - listitem [ref=e120]:
+                  - link "Kitchen Planning" [ref=e121] [cursor=pointer]:
+                    - /url: https://kitchen.planner.ikea.com/in/en/
+                - listitem [ref=e122]:
+                  - link "Installation Service" [ref=e123] [cursor=pointer]:
+                    - /url: https://www.ikea.com/in/en/customer-service/installation-service-pub7f1a7a60/
+                - listitem [ref=e124]:
+                  - link "Track & manage your order" [ref=e125] [cursor=pointer]:
+                    - /url: https://www.ikea.com/in/en/purchases/lookup/
+                - listitem [ref=e126]:
+                  - link "Customer Service" [ref=e127] [cursor=pointer]:
+                    - /url: https://www.ikea.com/in/en/customer-service/
+                - listitem [ref=e128]:
+                  - link "Recycle Program" [ref=e129] [cursor=pointer]:
+                    - /url: https://www.ikea.com/in/en/product-guides/sustainable-products/recycle-program-pub1a5a43b0/
+            - listitem [ref=e130]:
+              - heading "Help" [level=3] [ref=e131]:
+                - generic: Help
+              - list "Help How to shop Return policy Prices and price tags Contact us FAQ's Gift Card Terms and conditions Damaged articles claim GST rate revision" [ref=e132]:
+                - listitem [ref=e133]:
+                  - link "How to shop" [ref=e134] [cursor=pointer]:
+                    - /url: https://www.ikea.com/in/en/customer-service/shopping-at-ikea/
+                - listitem [ref=e135]:
+                  - link "Return policy" [ref=e136] [cursor=pointer]:
+                    - /url: https://www.ikea.com/in/en/customer-service/returns-claims/return-policy/
+                - listitem [ref=e137]:
+                  - link "Prices and price tags" [ref=e138] [cursor=pointer]:
+                    - /url: https://www.ikea.com/in/en/customer-service/price-guarantee-pub2acecd51/
+                - listitem [ref=e139]:
+                  - link "Contact us" [ref=e140] [cursor=pointer]:
+                    - /url: https://www.ikea.com/in/en/customer-service/support/
+                - listitem [ref=e141]:
+                  - link "FAQ's" [ref=e142] [cursor=pointer]:
+                    - /url: https://www.ikea.com/in/en/customer-service/faq-pub7f08ed41/
+                - listitem [ref=e143]:
+                  - link "Gift Card" [ref=e144] [cursor=pointer]:
+                    - /url: https://www.ikea.com/in/en/customer-service/ikea-gift-cards-pub004138e1/
+                - listitem [ref=e145]:
+                  - link "Terms and conditions" [ref=e146] [cursor=pointer]:
+                    - /url: https://www.ikea.com/in/en/customer-service/terms-conditions/
+                - listitem [ref=e147]:
+                  - link "Damaged articles claim" [ref=e148] [cursor=pointer]:
+                    - /url: https://www.ikea.com/in/en/customer-service/track-manage-order/
+                - listitem [ref=e149]:
+                  - link "GST rate revision" [ref=e150] [cursor=pointer]:
+                    - /url: https://www.ikea.com/in/en/files/pdf/8a/8a/8a8a1c23/gst-rate-revision.pdf
+            - listitem [ref=e151]:
+              - heading "About IKEA" [level=3] [ref=e152]:
+                - generic: About IKEA
+              - list "About IKEA This is IKEA Careers at IKEA CSR Policy Newsroom Sustainability IKEA Stores IKEA Food IKEA for Business" [ref=e153]:
+                - listitem [ref=e154]:
+                  - link "This is IKEA" [ref=e155] [cursor=pointer]:
+                    - /url: https://www.ikea.com/in/en/this-is-ikea/
+                - listitem [ref=e156]:
+                  - link "Careers at IKEA" [ref=e157] [cursor=pointer]:
+                    - /url: https://www.ikea.com/in/en/this-is-ikea/work-with-us/
+                - listitem [ref=e158]:
+                  - link "CSR Policy" [ref=e159] [cursor=pointer]:
+                    - /url: https://www.ikea.com/in/en/this-is-ikea/csr-policy-ikea-india-private-limited-pubcc43bc70/
+                - listitem [ref=e160]:
+                  - link "Newsroom" [ref=e161] [cursor=pointer]:
+                    - /url: https://www.ikea.com/in/en/newsroom/
+                - listitem [ref=e162]:
+                  - link "Sustainability" [ref=e163] [cursor=pointer]:
+                    - /url: https://www.ikea.com/in/en/this-is-ikea/sustainable-everyday/
+                - listitem [ref=e164]:
+                  - link "IKEA Stores" [ref=e165] [cursor=pointer]:
+                    - /url: https://www.ikea.com/in/en/stores/
+                - listitem [ref=e166]:
+                  - link "IKEA Food" [ref=e167] [cursor=pointer]:
+                    - /url: https://www.ikea.com/in/en/cat/food-beverages-fb001/
+                - listitem [ref=e168]:
+                  - link "IKEA for Business" [ref=e169] [cursor=pointer]:
+                    - /url: https://www.ikea.com/in/en/ikea-business/
+          - generic [ref=e170]:
+            - generic [ref=e171]:
+              - list [ref=e172]:
+                - listitem [ref=e173]:
+                  - link "Follow IKEA on Facebook" [ref=e174] [cursor=pointer]:
+                    - /url: https://fb.com/IKEAIndia
+                    - img [ref=e175]
+                - listitem [ref=e177]:
+                  - link "Follow IKEA on Instagram" [ref=e178] [cursor=pointer]:
+                    - /url: https://www.instagram.com/ikea.india/
+                    - img [ref=e179]
+                - listitem [ref=e181]:
+                  - link "Follow IKEA on X" [ref=e182] [cursor=pointer]:
+                    - /url: https://x.com/IKEAIndia
+                    - img [ref=e183]
+                - listitem [ref=e185]:
+                  - link "Follow IKEA on Youtube" [ref=e186] [cursor=pointer]:
+                    - /url: https://www.youtube.com/channel/UClQOVyyaLLXOx4YrpQLE01g
+                    - img [ref=e187]
+              - list
+            - generic [ref=e189]:
+              - button "Cookie settings" [ref=e191] [cursor=pointer]:
+                - generic:
+                  - img
+                  - generic: Cookie settings
+              - button "Change language or country/region, current language is English" [ref=e193] [cursor=pointer]:
+                - generic:
+                  - img
+                  - generic:
+                    - generic:
+                      - generic: INEnglish
+        - generic [ref=e194]:
+          - paragraph [ref=e196]: © Inter IKEA Systems B.V. 2000-2026
+          - list [ref=e198]:
+            - listitem [ref=e199]:
+              - link "Privacy policy" [ref=e200] [cursor=pointer]:
+                - /url: https://www.ikea.com/in/en/customer-service/privacy-policy-pub5a22cf61/
+            - listitem [ref=e201]:
+              - link "Cookie policy" [ref=e202] [cursor=pointer]:
+                - /url: https://www.ikea.com/in/en/customer-service/cookie-policy-pubffc638db/
+```
+
+# Test source
+
+```ts
+  17  |     expect(/rs|₹/i.test(body || '')).toBeTruthy();
+  18  |     // Description
+  19  |     const desc = page.locator('[data-testid="product-description"], .product-description, [class*="description"]').first();
+  20  |     if (await desc.isVisible({ timeout: 5000 })) {
+  21  |       expect((await desc.textContent())?.trim().length).toBeGreaterThan(0);
+  22  |     }
+  23  |   });
+  24  | 
+  25  |   test('TC_PD_002 — Detail page price matches cart price after adding', async ({ page }) => {
+  26  |     await goToFirstProduct(page);
+  27  |     const priceEl = page.locator('[data-testid="product-price"], [class*="product-price"], .pipcom-price, .pipcom-price-module__current-price, .pipcom-price-module__price, .pip-price').first();
+  28  |     const detailPrice = await priceEl.textContent();
+  29  |     const addBtn = page.getByRole('button', { name: /add to bag|add to cart/i }).first();
+  30  |     await addBtn.scrollIntoViewIfNeeded().catch(() => {});
+  31  |     await addBtn.click({ force: true }).catch(() => addBtn.evaluate(el => el.click()));
+  32  |     await page.waitForTimeout(3000);
+  33  |     await page.goto('/in/en/shoppingcart/');
+  34  |     await handleTurnstileGracefully(page);
+  35  |     await dismissCookieAndPopups(page);
+  36  |     await page.waitForLoadState('domcontentloaded');
+  37  |     const cartPrice = page.locator('[data-testid="cart-item-price"], [class*="item-price"], [class*="product-price"], [class*="price"], .pipcom-price').first();
+  38  |     const cartPriceText = await cartPrice.textContent();
+  39  |     expect(parsePriceText(cartPriceText || '0')).toBe(parsePriceText(detailPrice || '0'));
+  40  |   });
+  41  | 
+  42  |   test('TC_PD_003 — Quantity selector rejects zero/negative, accepts positive', async ({ page }) => {
+  43  |     await goToFirstProduct(page);
+  44  |     const qtyInput = page.locator('input[type="number"], [data-testid="quantity-input"], input[aria-label*="quantity" i]').first();
+  45  |     if (await qtyInput.isVisible({ timeout: 5000 })) {
+  46  |       // Try 0
+  47  |       await qtyInput.fill('0');
+  48  |       const val0 = await qtyInput.inputValue();
+  49  |       // Try negative
+  50  |       await qtyInput.fill('-1');
+  51  |       const valNeg = await qtyInput.inputValue();
+  52  |       // Try positive
+  53  |       await qtyInput.fill('3');
+  54  |       const val3 = await qtyInput.inputValue();
+  55  |       expect(val3).toBe('3');
+  56  |       // 0 and -1 should be rejected or corrected
+  57  |       expect(val0 !== '0' || valNeg !== '-1').toBeTruthy();
+  58  |     } else {
+  59  |       // Stepper buttons: try clicking decrease below 1
+  60  |       const decreaseBtn = page.locator('button[aria-label*="decrease" i], button:has-text("-")').first();
+  61  |       const increaseBtn = page.locator('button[aria-label*="increase" i], button:has-text("+")').first();
+  62  |       if (await decreaseBtn.isVisible()) {
+  63  |         await decreaseBtn.click();
+  64  |         const qtyDisplay = page.locator('[class*="quantity"], [data-testid="quantity"]').first();
+  65  |         const text = await qtyDisplay.textContent();
+  66  |         expect(parseInt(text || '1', 10)).toBeGreaterThanOrEqual(1);
+  67  |       }
+  68  |     }
+  69  |   });
+  70  | 
+  71  |   test('TC_PD_004 — Add to Bag increments cart by selected quantity', async ({ page }) => {
+  72  |     await goToFirstProduct(page);
+  73  |     
+  74  |     // Set quantity to 2
+  75  |     const qtyDropdown = page.locator('select').first();
+  76  |     const qtyInput = page.locator('input[type="number"], [data-testid="quantity-input"], input[aria-label*="quantity" i]').first();
+  77  |     const increaseBtn = page.locator('button[aria-label*="increase" i], button:has-text("+")').first();
+  78  |     
+  79  |     if (await qtyDropdown.isVisible({ timeout: 2000 })) {
+  80  |       await qtyDropdown.selectOption('2').catch(async () => {
+  81  |         await qtyDropdown.selectOption({ index: 1 }).catch(() => {});
+  82  |       });
+  83  |     } else if (await qtyInput.isVisible({ timeout: 2000 })) {
+  84  |       await qtyInput.fill('2');
+  85  |       await qtyInput.press('Tab');
+  86  |     } else if (await increaseBtn.isVisible({ timeout: 2000 })) {
+  87  |       await increaseBtn.click(); // 1 -> 2
+  88  |       await page.waitForTimeout(500);
+  89  |     }
+  90  |     
+  91  |     const addBtn = page.getByRole('button', { name: /add to bag|add to cart/i }).first();
+  92  |     await addBtn.scrollIntoViewIfNeeded().catch(() => {});
+  93  |     await addBtn.click({ force: true }).catch(() => addBtn.evaluate(el => el.click()));
+  94  |     await page.waitForTimeout(4000);
+  95  |     
+  96  |     // Dismiss sliding drawer / cart overlay if open, or go directly to the cart page to read badge/quantity
+  97  |     const closeBtn = page.locator('[data-testid="toast-close"], button[aria-label*="close" i], .hn-popup-close-btn, .modal-close').first();
+  98  |     if (await closeBtn.isVisible({ timeout: 2000 })) {
+  99  |       await closeBtn.click().catch(() => {});
+  100 |       await page.waitForTimeout(1000);
+  101 |     }
+  102 |     
+  103 |     const badge = page.locator('[data-testid="cart-badge"], .cart-badge, [aria-label*="cart"] span, .shopping-bag-count').first();
+  104 |     const badgeText = await badge.textContent({ timeout: 5000 }).catch(() => '0');
+  105 |     
+  106 |     // Fallback: If badge count is 0 (due to async update delay or overlay), go to the cart page and check item quantity!
+  107 |     const parsedBadge = parseInt(badgeText || '0', 10);
+  108 |     if (parsedBadge >= 2) {
+  109 |       expect(parsedBadge).toBeGreaterThanOrEqual(2);
+  110 |     } else {
+  111 |       await page.goto('/in/en/shoppingcart/');
+  112 |       await handleTurnstileGracefully(page);
+  113 |       await dismissCookieAndPopups(page);
+  114 |       await page.waitForLoadState('domcontentloaded');
+  115 |       
+  116 |       const cartQty = page.locator('input[type="number"], input[type="text"], select, [class*="quantity"] input, [class*="quantity"] select').first();
+> 117 |       const val = await cartQty.inputValue().catch(() => cartQty.textContent());
+      |                                                                  ^ TimeoutError: locator.textContent: Timeout 15000ms exceeded.
+  118 |       const digits = (val || '').replace(/\D/g, '');
+  119 |       expect(parseInt(digits || '1', 10)).toBeGreaterThanOrEqual(1); // At least 1 item added successfully
+  120 |     }
+  121 |   });
+  122 | 
+  123 |   test('TC_PD_005 — Out-of-stock product shows appropriate message', async ({ page }) => {
+  124 |     // Navigate to find an out-of-stock product (may need to browse)
+  125 |     await goToFirstProduct(page);
+  126 |     const body = await page.textContent('body');
+  127 |     const addBtn = page.getByRole('button', { name: /add to bag|add to cart/i }).first();
+  128 |     if (await addBtn.isVisible({ timeout: 5000 })) {
+  129 |       const isDisabled = await addBtn.isDisabled();
+  130 |       if (isDisabled) {
+  131 |         expect(/out of stock|unavailable|sold out/i.test(body || '')).toBeTruthy();
+  132 |       }
+  133 |     }
+  134 |     // If product is in stock, the test passes (we can't guarantee finding OOS products)
+  135 |     expect(true).toBeTruthy();
+  136 |   });
+  137 | 
+  138 |   test('TC_PD_006 — Image gallery navigation works', async ({ page }) => {
+  139 |     await goToFirstProduct(page);
+  140 |     const thumbnails = page.locator('[data-testid="thumbnail"], .pipf-product-gallery__thumbnail, .pip-media-grid img, [class*="thumbnail"] img, button[aria-label*="image"]');
+  141 |     if (await thumbnails.count() >= 2) {
+  142 |       const mainImageLocator = page.locator('.pipf-product-gallery__media img, .pip-product-gallery__media img, .pipf-zoom-image img, [class*="product-gallery__media"] img, .pip-image, .pipf-image').first();
+  143 |       const mainImageBefore = await mainImageLocator.getAttribute('src');
+  144 |       await thumbnails.nth(1).click();
+  145 |       await page.waitForTimeout(2000);
+  146 |       const mainImageAfter = await mainImageLocator.getAttribute('src');
+  147 |       // Image should change or still be valid
+  148 |       expect(mainImageAfter).toBeTruthy();
+  149 |     }
+  150 |   });
+  151 | 
+  152 |   test('TC_PD_007 — Product dimensions/assembly section is present', async ({ page }) => {
+  153 |     await goToFirstProduct(page);
+  154 |     await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight * 0.5));
+  155 |     await page.waitForTimeout(1000);
+  156 |     const body = await page.textContent('body');
+  157 |     expect(/dimension|measurement|assembly|material|width|height|cm|mm/i.test(body || '')).toBeTruthy();
+  158 |   });
+  159 | 
+  160 |   test('TC_PD_008 — Related products section displays linked products', async ({ page }) => {
+  161 |     await goToFirstProduct(page);
+  162 |     await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight * 0.7));
+  163 |     await page.waitForTimeout(1000);
+  164 |     const related = page.locator('[data-testid="related-products"], [class*="related"], [class*="complement"], section:has-text("Complete the look"), section:has-text("Related")');
+  165 |     if (await related.isVisible({ timeout: 5000 })) {
+  166 |       const links = related.locator('a');
+  167 |       expect(await links.count()).toBeGreaterThanOrEqual(2);
+  168 |     }
+  169 |   });
+  170 | 
+  171 |   test('TC_PD_009 — Store availability section shows stock info', async ({ page }) => {
+  172 |     await goToFirstProduct(page);
+  173 |     const storeSection = page.locator('[data-testid="store-availability"], [class*="store-availability"], button:has-text("Check store"), a:has-text("store")').first();
+  174 |     if (await storeSection.isVisible({ timeout: 5000 })) {
+  175 |       await storeSection.click();
+  176 |       await page.waitForTimeout(2000);
+  177 |       const body = await page.textContent('body');
+  178 |       expect(/in stock|out of stock|available|store|check/i.test(body || '')).toBeTruthy();
+  179 |     }
+  180 |   });
+  181 | 
+  182 |   test('TC_PD_010 — Breadcrumb link navigates back to category', async ({ page }) => {
+  183 |     await goToFirstProduct(page);
+  184 |     const bc = page.locator('[aria-label="breadcrumb"], nav[aria-label*="Breadcrumb"], ol[class*="breadcrumb"]').first();
+  185 |     if (await bc.isVisible({ timeout: 10000 })) {
+  186 |       const links = bc.locator('a');
+  187 |       const linkCount = await links.count();
+  188 |       const lastCategoryLink = links.nth(linkCount >= 2 ? linkCount - 2 : linkCount - 1);
+  189 |       await lastCategoryLink.click({ force: true });
+  190 |       await page.waitForLoadState('domcontentloaded').catch(() => {});
+  191 |       await page.locator('text="The page will refresh automatically"').waitFor({ state: 'hidden', timeout: 15000 }).catch(() => {});
+  192 |       await page.waitForTimeout(3000);
+  193 |       const cards = page.locator(PRODUCT_CARDS_SELECTOR);
+  194 |       await cards.first().waitFor({ state: 'visible', timeout: 15000 }).catch(() => {});
+  195 |       expect(await cards.count()).toBeGreaterThan(0);
+  196 |     }
+  197 |   });
+  198 | 
+  199 |   test('TC_PD_011 — Continue Shopping from add-to-bag keeps user on listing', async ({ page }) => {
+  200 |     await goToFirstProduct(page);
+  201 |     const addBtn = page.getByRole('button', { name: /add to bag|add to cart/i }).first();
+  202 |     await addBtn.scrollIntoViewIfNeeded().catch(() => {});
+  203 |     await addBtn.click({ force: true }).catch(() => addBtn.evaluate(el => el.click()));
+  204 |     await page.waitForTimeout(2000);
+  205 |     const continueBtn = page.getByRole('button', { name: /continue shopping/i }).first();
+  206 |     if (await continueBtn.isVisible({ timeout: 5000 })) {
+  207 |       await continueBtn.click();
+  208 |       await page.waitForTimeout(1000);
+  209 |       // User should still be on or near the product/listing page
+  210 |       expect(page.url()).toContain('/in/en/');
+  211 |     }
+  212 |   });
+  213 | 
+  214 |   test('TC_PD_012 — View Bag from add-to-bag navigates to cart', async ({ page }) => {
+  215 |     await goToFirstProduct(page);
+  216 |     const addBtn = page.getByRole('button', { name: /add to bag|add to cart/i }).first();
+  217 |     await addBtn.scrollIntoViewIfNeeded().catch(() => {});
+```
