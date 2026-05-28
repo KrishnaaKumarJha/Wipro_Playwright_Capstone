@@ -81,7 +81,7 @@ jobs:
       with:
         node-version: lts/*
         cache: npm
-        cache-dependency-path: Day21/package-lock.json
+        cache-dependency-path: package-lock.json
 
     - name: Install Dependencies
       run: npm ci

@@ -40,8 +40,7 @@ test.describe('Module 3 — Search Functionality', () => {
       await performSearch(page, q);
       const body = await page.textContent('body').catch(() => '');
       if (/refresh automatically|just a moment|verifying/i.test(body || '')) {
-        console.log(`Skipping case-insensitive count check for "${q}" due to Turnstile/Akamai bot interception.`);
-        expect(true).toBe(true);
+        test.skip(true, `Turnstile/Akamai bot interception during case-insensitive count check for "${q}"`);
         return;
       }
       const cards = page.locator('.pip-product-compact, .plp-fragment-wrapper, [data-testid="plp-product-card"], [data-testid="product-card"], .product-card, .item-card, .plp-product-card__container');
@@ -59,8 +58,7 @@ test.describe('Module 3 — Search Functionality', () => {
     await performSearch(page, 'boo');
     const body = await page.textContent('body').catch(() => '');
     if (/refresh automatically|just a moment|verifying/i.test(body || '')) {
-      console.log('Skipping partial keyword assertion due to Turnstile/Akamai bot interception.');
-      expect(true).toBe(true);
+      test.skip(true, 'Turnstile/Akamai bot challenge intercepted the page');
       return;
     }
     const cards = page.locator('.pip-product-compact, .plp-fragment-wrapper, [data-testid="plp-product-card"], [data-testid="product-card"], .product-card, .item-card, .plp-product-card__container');
@@ -104,8 +102,7 @@ test.describe('Module 3 — Search Functionality', () => {
     
     const bodyBefore = await page.textContent('body').catch(() => '');
     if (/refresh automatically|just a moment|verifying/i.test(bodyBefore || '')) {
-      console.log('Skipping search results persistence assertion due to initial Turnstile/Akamai bot interception.');
-      expect(true).toBe(true);
+      test.skip(true, 'Turnstile/Akamai bot challenge intercepted the page initially');
       return;
     }
 
@@ -114,8 +111,7 @@ test.describe('Module 3 — Search Functionality', () => {
     
     const bodyAfter = await page.textContent('body').catch(() => '');
     if (/refresh automatically|just a moment|verifying/i.test(bodyAfter || '')) {
-      console.log('Skipping search results persistence assertion after reload due to Turnstile/Akamai bot interception.');
-      expect(true).toBe(true);
+      test.skip(true, 'Turnstile/Akamai bot challenge intercepted the page after reload');
       return;
     }
 
@@ -190,8 +186,7 @@ test.describe('Module 3 — Search Functionality', () => {
         }
       }
     } catch (e) {
-      console.log('Skipping sort assertion due to element state or interception.');
-      expect(true).toBe(true);
+      test.skip(true, 'Sort assertion skipped due to element state or interception');
     }
   });
 });
