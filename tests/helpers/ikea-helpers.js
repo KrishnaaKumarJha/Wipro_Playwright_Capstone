@@ -100,9 +100,10 @@ export async function addProductToCart(page, category = 'cat/sofas-fu003/') {
  */
 export async function getCartBadgeCount(page) {
   try {
-    const badge = page.locator('[data-testid="cart-badge"], .cart-badge, [aria-label*="cart"] span, .shopping-bag-count');
-    const text = await badge.first().textContent({ timeout: 5000 });
-    return parseInt(text?.trim() || '0', 10);
+    const badge = page.locator('a[href*="shoppingcart"] .hnf-btn__label, .hnf-btn__badge, [data-testid="cart-badge"], .cart-badge').first();
+    const text = await badge.textContent({ timeout: 5000 }).catch(() => '');
+    const match = text?.match(/(\d+)/);
+    return match ? parseInt(match[1], 10) : 0;
   } catch {
     return 0;
   }

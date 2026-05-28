@@ -1,29 +1,25 @@
-/**
- * Helper for Module 7 — Checkout Flow.
- * Defines checkout-specific helper functions and imports common helpers.
- */
-
 import {
   dismissCookieAndPopups,
   loginWithTestAccount,
   addProductToCart,
   navigateToCart,
-  parsePriceText
+  parsePriceText,
+  handleTurnstileGracefully
 } from '../ikea-helpers.js';
 
 /**
- * Handles full checkout entry: logs in, adds a product to cart, navigates to cart, and clicks proceed to checkout.
+ * Handles full checkout entry: logs in, adds a product to cart, and navigates to checkout.
  * @param {import('@playwright/test').Page} page
  */
 export async function goToCheckout(page) {
   await loginWithTestAccount(page);
   await addProductToCart(page);
-  await navigateToCart(page);
-  const checkoutBtn = page.getByRole('button', { name: /proceed to checkout|checkout/i }).first()
-    || page.getByRole('link', { name: /proceed to checkout|checkout/i }).first();
-  await checkoutBtn.click();
-  await page.waitForLoadState('domcontentloaded');
+  console.log('Navigating directly to checkout page...');
+  await page.goto('/in/en/checkout/');
+  await handleTurnstileGracefully(page);
   await dismissCookieAndPopups(page);
+  await page.waitForLoadState('domcontentloaded').catch(() => {});
+  await page.waitForTimeout(3000);
 }
 
 export {

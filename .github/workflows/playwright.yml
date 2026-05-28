@@ -1,55 +1,125 @@
-name: Playwright Tests
+name: Playwright Tests & Allure Report
 on:
   push:
-    branches: [ main, master ]
+    branches:
+      - "**"
   pull_request:
     branches: [ main, master ]
+  workflow_dispatch:
 
 permissions:
   contents: write
+  pages: write
+  id-token: write
 
 jobs:
   test:
     timeout-minutes: 60
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: Day21
+    strategy:
+      fail-fast: false
+      matrix:
+        shard_index: [1, 2, 3]
+    env:
+      CI: true
+
     steps:
-    - uses: actions/checkout@v4
-    - uses: actions/setup-node@v4
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
       with:
         node-version: lts/*
-    - name: Install dependencies
-      run: npm ci
-    - name: Install Playwright Browsers
-      run: npx playwright install --with-deps
-    - name: Run Playwright tests
-      run: npx playwright test
-      continue-on-error: true
-      
-    - name: Generate Allure report
-      run: npx allure generate allure-results --clean -o allure-report
-      if: always()
-      
-    - name: Upload Playwright Report
-      uses: actions/upload-artifact@v4
-      if: always()
-      with:
-        name: playwright-report
-        path: playwright-report/
-        retention-days: 30
+        cache: npm
+        cache-dependency-path: Day21/package-lock.json
 
-    - name: Upload Allure Report
-      uses: actions/upload-artifact@v4
+    - name: Install Dependencies
+      run: npm ci
+
+    - name: Cache Playwright Browsers
+      id: playwright-cache
+      uses: actions/cache@v4
+      with:
+        path: ~/.cache/ms-playwright
+        key: playwright-browsers-${{ runner.os }}-${{ hashFiles('Day21/package-lock.json') }}
+        restore-keys: |
+          playwright-browsers-${{ runner.os }}-
+
+    - name: Install Playwright Browsers & OS Dependencies
+      if: steps.playwright-cache.outputs.cache-hit != 'true'
+      run: npx playwright install --with-deps
+
+    - name: Install Playwright OS Dependencies Only (If Cache Hit)
+      if: steps.playwright-cache.outputs.cache-hit == 'true'
+      run: npx playwright install-deps
+
+    - name: Run Playwright Tests
+      run: npm run test:ci -- --shard=${{ matrix.shard_index }}/3
+      continue-on-error: true
+
+    - name: Upload Allure Raw Results (Shard)
       if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: allure-results-shard-${{ matrix.shard_index }}
+        path: allure-results
+        if-no-files-found: warn
+        retention-days: 7
+
+  report:
+    if: ${{ always() }}
+    needs: [test]
+    timeout-minutes: 30
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: Day21
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: lts/*
+        cache: npm
+        cache-dependency-path: Day21/package-lock.json
+
+    - name: Install Dependencies
+      run: npm ci
+
+    - name: Download Allure Raw Results
+      uses: actions/download-artifact@v4
+      with:
+        pattern: allure-results-shard-*
+        merge-multiple: false
+        path: allure-results
+
+    - name: Ensure Allure Results Directory
+      run: mkdir -p Day21/allure-results
+
+    - name: Generate Allure Report
+      run: npm run allure:generate
+      continue-on-error: true
+
+    - name: Upload Allure HTML Report
+      if: always()
+      uses: actions/upload-artifact@v4
       with:
         name: allure-report
-        path: allure-report/
-        retention-days: 30
+        path: allure-report
+        if-no-files-found: warn
+        retention-days: 7
 
-    - name: Publish to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v4
-      if: always()
+    - name: Deploy to GitHub Pages
+      if: always() && github.event_name == 'push' && (github.ref_name == 'main' || github.ref_name == 'master')
+      uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_branch: gh-pages
-        publish_dir: allure-report
-
+        publish_dir: Day21/allure-report
+      continue-on-error: true
