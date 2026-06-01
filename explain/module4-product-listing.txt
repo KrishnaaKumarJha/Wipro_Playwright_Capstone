@@ -1,0 +1,72 @@
+================================================================================
+MODULE 4 — PRODUCT LISTING & FILTERS (14 Test Cases)
+================================================================================
+Validates category routing, filter application, dynamic product count updates,
+sort accuracy, and multi-filter combinations.
+Default test category: /in/en/cat/sofas-fu003/ (Sofas)
+================================================================================
+
+TC_PL_001 — Category displays only products in that category
+  Navigates to Sofas category. Checks h1 contains 'sofa/armchair'. Cards > 0.
+
+TC_PL_002 — Product count matches rendered card count
+  Reads the "X products" summary element. Counts rendered cards.
+  Asserts they match (for first page, ≤24).
+
+TC_PL_003 — Colour filter updates listing dynamically
+  Notes card count before filter. Opens filter panel, applies "Beige" colour.
+  After filter: cards ≤ before, no unfiltered items.
+
+TC_PL_004 — Filter count badge updates
+  Applies 2 filters. Checks for "2 filters active" badge or text.
+
+TC_PL_005 — Price range filter excludes products outside range
+  Applies price filter (e.g., 0–5,000 INR). Inspects first 5 product prices.
+  All must be within the range.
+
+TC_PL_006 — Clearing all filters restores full listing
+  Notes card count, applies a filter, clicks "Clear All". Card count should
+  return to pre-filter total.
+
+TC_PL_007 — Multiple filters simultaneously narrow results
+  Applies Color=White AND Price=0-10000. Results must satisfy BOTH conditions.
+
+TC_PL_008 — Sort Price Low to High orders ascending
+  Selects "Price: Low to High". Compares first and last product prices on page.
+  First ≤ last.
+
+TC_PL_009 — Sort Price High to Low orders descending
+  Selects "Price: High to Low". First product price ≥ last.
+
+TC_PL_010 — Sort persists after pagination
+  Applies Low-to-High sort, navigates to page 2. Sort order should be maintained.
+
+TC_PL_011 — Pagination loads correct products per page
+  Notes the first product on page 1, navigates to page 2. Page 2 shows
+  different products (no duplicates from page 1).
+
+TC_PL_012 — Subcategory breadcrumb reflects nested path
+  Navigates to Wardrobes (/in/en/cat/wardrobes-19053/). Breadcrumb should show
+  full path. Clicking middle segment navigates correctly.
+
+TC_PL_013 — Product cards display name, price INR, and image
+  Inspects 6 product cards. Each must have: img element, name text,
+  price with Rs/₹ symbol.
+
+TC_PL_014 — Filter panel remains accessible after applying filter
+  Applies a filter, checks that the filter panel is still visible/accessible
+  for further filtering without errors.
+
+================================================================================
+REFACTORING & HELPER ARCHITECTURE (May 2026 Refactor)
+================================================================================
+CHANGES MADE:
+  - Created a dedicated helper file: tests/helpers/modules/product-listing.helper.js
+  - Updated tests/product-listing.spec.js to import helpers from this module.
+  - Implemented a unified `PRODUCT_CARDS_SELECTOR` variable that comprehensively matches different IKEA layouts (including `.pip-product-compact`, `.plp-fragment-wrapper`, `[data-testid="plp-product-card"]`, and others) to ensure resilient product identification.
+  - Implemented `selectSortOption` in the helper module, which dynamically handles `<select>` elements and click-based button/popover dropdowns, filtering out unrelated hidden elements (like shoppable image lists).
+  - Added robust `.first().waitFor({ state: 'visible' })` synchronization before assertions to handle asynchronous, lazy-loading product listings.
+
+BENEFITS:
+  - Isolation: Changes to Module 4 helpers do not impact other modules or the main `ikea-helpers.js` file.
+  - Resilience: Completely immune to layout shifts, invisible interactive overlays, and dynamic DOM loading delays common to live websites.

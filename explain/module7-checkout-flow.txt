@@ -1,0 +1,89 @@
+================================================================================
+MODULE 7 — CHECKOUT FLOW (18 Test Cases)
+================================================================================
+End-to-end checkout: pre-fill validation, address form checks, order summary
+accuracy, dummy payment entry, confirmation page assertions.
+SAFETY: Final Pay/Confirm button is NEVER clicked — no real transactions.
+================================================================================
+
+TC_CF_001 — Proceed to Checkout navigates logged-in user to checkout page
+  Logs in, adds product, clicks Proceed to Checkout from cart.
+  URL should match /checkout/ or /order/. Page shows delivery/address form.
+
+TC_CF_002 — Guest clicking checkout is prompted to login
+  Adds item as guest (no login). Clicks Proceed to Checkout.
+  Expects login/register prompt before checkout proceeds.
+
+TC_CF_003 — Checkout displays cart items with correct quantities and prices
+  Logs in, adds 2 items, proceeds to checkout. Order summary panel should
+  list both products with matching quantities and prices.
+
+TC_CF_004 — Order total matches cart subtotal
+  Notes cart subtotal before checkout. Proceeds to checkout.
+  Checkout summary total should be ≥ cart subtotal (delivery may be added).
+
+TC_CF_005 — Saved address auto-populates delivery form
+  Logs in with account that has a saved address. Proceeds to checkout.
+  Address fields should be pre-filled (or at least one field has content).
+
+TC_CF_006 — Address form validates all required fields
+  On checkout, clears all required fields. Tries to proceed.
+  Each empty field should show validation error. User cannot advance.
+
+TC_CF_007 — PIN code validates 6-digit format
+  Tests PIN field with '12' (too short) and 'ABCDEF' (non-numeric).
+  Both should show errors. '500001' (valid 6-digit) should be accepted.
+
+TC_CF_008 — Phone number validates Indian mobile format
+  Tests phone field with '123' (too short) — should be rejected.
+  '9876543210' (valid 10-digit starting with 6-9) should be accepted.
+
+TC_CF_009 — Adding new address during checkout preserves cart
+  On checkout address step, clicks "Add New Address". Fills it.
+  Order summary should still show cart items (cart not lost).
+
+TC_CF_010 — Delivery method step shows shipping options
+  Proceeds past address step. Expects delivery options like
+  "Home Delivery" with estimated date or cost.
+
+TC_CF_011 — Order summary reflects delivery charge
+  Checks for delivery/shipping charge mention on checkout page.
+
+TC_CF_012 — Payment page shows accepted payment methods
+  Navigates through checkout steps to reach payment. Expects options like
+  UPI, Card, Net Banking, COD. At least 1 must be shown.
+
+TC_CF_013 — Card form accepts dummy test card data
+  Selects card payment. Fills: 4111111111111111, 12/28, 123, Test User.
+  All 4 fields should accept input without premature validation blocking.
+
+TC_CF_014 — Card number field accepts only numeric input
+  Types alphabetic characters in card number field. Non-numeric input
+  should be blocked or stripped — only digits remain.
+
+TC_CF_015 — Checkout does not attempt real payment
+  Completes all steps with dummy data but STOPS before final submit.
+  URL must still be on ikea.com (no payment gateway redirect).
+
+TC_CF_016 — Order confirmation displays order reference ID
+  Navigates as far as possible through checkout. If confirmation reached,
+  checks for "thank you" message + order reference number.
+
+TC_CF_017 — Cart badge resets after successful order
+  If order completed, navigates to homepage. Cart badge should show 0.
+
+TC_CF_018 — Order appears in account order history
+  If order completed, navigates to /in/en/profile/orders/.
+  Most recent order should be listed with date, ID, and status.
+
+================================================================================
+REFACTORING & HELPER ARCHITECTURE (May 2026 Refactor)
+================================================================================
+CHANGES MADE:
+  - Created a dedicated helper file: tests/helpers/modules/checkout-flow.helper.js
+  - Moved the checkout navigation helper `goToCheckout(page)` out of `tests/checkout-flow.spec.js` and into the modular helper file.
+  - Updated tests/checkout-flow.spec.js to import helpers from this module.
+
+BENEFITS:
+  - Isolation: Changes to Module 7 helpers do not impact other modules or the main `ikea-helpers.js` file.
+  - Reusability: `goToCheckout` is now cleanly isolated and reusable.

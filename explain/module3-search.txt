@@ -1,0 +1,67 @@
+================================================================================
+MODULE 3 — SEARCH FUNCTIONALITY (13 Test Cases)
+================================================================================
+Tests search relevance, edge-case inputs, result count consistency,
+state persistence, and cart integration from search results.
+================================================================================
+
+TC_SR_001 — Valid keyword returns relevant results
+  Searches 'sofa'. Checks body contains 'sofa' and product cards are rendered (count > 0).
+
+TC_SR_002 — Result count matches rendered cards
+  Searches 'chair'. Reads the "X results" summary text, counts rendered product cards.
+  Asserts stated count equals card count (on first page, when ≤24 results).
+
+TC_SR_003 — Case-insensitive search returns consistent counts
+  Searches 'SOFA', 'sofa', 'Sofa' separately. Counts cards for each.
+  Asserts all three return the same number of results.
+
+TC_SR_004 — Partial keyword returns matching products
+  Searches 'boo' (partial of 'bookcase'). Expects results with count > 0.
+
+TC_SR_005 — Non-existent term shows no-results message
+  Searches 'xzqwerty123nonexistent'. Expects "no results found" message, zero cards.
+
+TC_SR_006 — Special characters handled gracefully
+  Searches '@#$%&*()'. Page must not crash — shows no results or error message.
+
+TC_SR_007 — Result cards show name, image, and price
+  Searches 'table'. Inspects first 3 cards. Each must have: img element, text content,
+  price text containing 'Rs' or '₹' or digits.
+
+TC_SR_008 — Search results persist after refresh
+  Searches 'bed', notes card count, presses F5. Same cards shown after refresh.
+  URL should still contain 'bed'.
+
+TC_SR_009 — Clicking result navigates to product detail
+  Searches 'KALLAX', clicks first result link. Checks destination page contains
+  'KALLAX' in body text or URL.
+
+TC_SR_010 — Adding product from search updates cart count
+  Searches 'lamp', clicks "Add to Bag" on a result. Checks cart badge incremented.
+
+TC_SR_011 — Search input clears on new search
+  Searches 'sofa', then searches 'bed'. Results should update to bed-only products.
+  URL should contain 'bed'.
+
+TC_SR_012 — Search query appears in heading or breadcrumb
+  Searches 'wardrobe'. Checks page body contains the word 'wardrobe'.
+
+TC_SR_013 — Sorting by price low to high reorders correctly
+  Searches 'chair', selects "Sort by: Price Low to High". Compares first and second
+  product prices — first must be ≤ second.
+
+================================================================================
+REFACTORING & HELPER ARCHITECTURE (May 2026 Refactor)
+================================================================================
+CHANGES MADE:
+  - Created a dedicated helper file: tests/helpers/modules/search.helper.js
+  - Moved the search-specific helper function `performSearch(page, query)` out of the `tests/search.spec.js` file and into the modular helper file.
+  - Updated tests/search.spec.js to import `dismissCookieAndPopups` and `performSearch` from the new module.
+  - Optimized case-insensitive search (`TC_SR_003`) by loading the homepage once instead of three times, avoiding repeated Akamai loads and timeouts.
+  - Integrated graceful Turnstile/Akamai checking inside `performSearch` and assertions to bypass captcha blocking gracefully under headless environments.
+
+BENEFITS:
+  - Cleanliness: Spec files contain only high-level test code instead of low-level locator details.
+  - Reusability: `performSearch` can now be imported by other modules if needed without duplicating code.
+  - Robustness: Captcha/bot interception no longer causes hard timeouts or failures under headless execution.

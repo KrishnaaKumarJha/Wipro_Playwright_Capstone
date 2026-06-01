@@ -3,6 +3,6 @@
  * Imports and re-exports helpers for API tests.
  */
 
-import { dismissCookieAndPopups, loginWithTestAccount, addProductToCart } from '../ikea-helpers.js';
+import { dismissCookieAndPopups, loginWithTestAccount, addProductToCart, handleTurnstileGracefully } from '../ikea-helpers.js';
 
-export { dismissCookieAndPopups, loginWithTestAccount, addProductToCart };
+export { dismissCookieAndPopups, loginWithTestAccount, addProductToCart, handleTurnstileGracefully };

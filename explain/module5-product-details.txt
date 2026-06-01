@@ -1,0 +1,71 @@
+================================================================================
+MODULE 5 — PRODUCT DETAILS (13 Test Cases)
+================================================================================
+Validates product data integrity, quantity controls, cart interaction from
+detail page, review submission, and cross-linked navigation.
+================================================================================
+
+TC_PD_001 — Product page shows name, article number, price, description
+  Opens first product from Sofas category. Checks h1 has text, body contains
+  article number pattern (XXX.XXX.XX), Rs/₹ price, and description section.
+
+TC_PD_002 — Detail page price matches cart price after adding
+  Notes the product price on detail page. Adds to cart, navigates to cart.
+  Asserts cart line item price equals detail page price exactly (using parsePriceText).
+
+TC_PD_003 — Quantity selector rejects zero/negative, accepts positive
+  Tries filling quantity with 0, -1, and 3. Only 3 should be accepted.
+  If stepper buttons used instead of input, clicking decrease below 1 should
+  keep quantity at 1.
+
+TC_PD_004 — Add to Bag increments cart by selected quantity
+  Sets quantity to 2 (clicks + button), clicks Add to Bag.
+  Cart badge should increase by exactly 2.
+
+TC_PD_005 — Out-of-stock product shows appropriate message
+  Checks if the Add to Bag button is disabled. If disabled, expects
+  "out of stock" or "unavailable" text. (Product availability varies.)
+
+TC_PD_006 — Image gallery navigation works
+  Finds thumbnail images on product page. Clicks the second thumbnail.
+  Checks that the main image source changed (or at least stays valid).
+
+TC_PD_007 — Product dimensions/assembly section is present
+  Scrolls to middle of product page. Checks body contains dimension-related
+  keywords: 'dimension', 'measurement', 'assembly', 'material', 'cm'.
+
+TC_PD_008 — Related products section displays linked products
+  Scrolls to "Complete the look" / "Related products" section.
+  Checks it contains at least 2 product links.
+
+TC_PD_009 — Store availability section shows stock info
+  Finds "Check store availability" section/button. Clicks it.
+  Checks for stock status text ('in stock', 'out of stock', 'available').
+
+TC_PD_010 — Breadcrumb link navigates back to category
+  Finds breadcrumb on product detail page. Clicks the last category link.
+  Asserts the category listing page loads with product cards.
+
+TC_PD_011 — Continue Shopping from add-to-bag keeps user on listing
+  Adds product, clicks "Continue Shopping" in the confirmation panel.
+  User should remain on or return to the product/listing page.
+
+TC_PD_012 — View Bag from add-to-bag navigates to cart
+  Adds product, clicks "View Bag" or "Go to Bag" in confirmation panel.
+  Asserts URL contains 'shoppingcart'.
+
+TC_PD_013 — Favourite/wishlist toggle adds item when logged in
+  Logs in first (loginWithTestAccount), opens a product, clicks the heart icon.
+  Navigates to /in/en/favourites/ and checks the product appears.
+
+================================================================================
+REFACTORING & HELPER ARCHITECTURE (May 2026 Refactor)
+================================================================================
+CHANGES MADE:
+  - Created a dedicated helper file: tests/helpers/modules/product-details.helper.js
+  - Moved the product detail navigation helper `goToFirstProduct(page)` out of the `tests/product-details.spec.js` file and into the modular helper file.
+  - Updated tests/product-details.spec.js to import `dismissCookieAndPopups`, `loginWithTestAccount`, `parsePriceText`, and `goToFirstProduct` from the new module.
+
+BENEFITS:
+  - Cleanliness: Spec files contain only high-level test code instead of low-level locator details.
+  - Reusability: `goToFirstProduct` is now highly reusable.

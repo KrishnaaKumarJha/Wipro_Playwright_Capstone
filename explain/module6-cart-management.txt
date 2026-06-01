@@ -1,0 +1,83 @@
+================================================================================
+MODULE 6 — CART MANAGEMENT (17 Test Cases)
+================================================================================
+Tests cart CRUD operations, quantity update math, subtotal calculations,
+session persistence, and edge cases (empty cart, duplicate adds, quantity bounds).
+================================================================================
+
+TC_CM_001 — Adding one product increments cart badge by 1
+  Records badge count before. Adds a product using addProductToCart() helper.
+  Badge should be exactly (before + 1).
+
+TC_CM_002 — Adding same product twice merges into qty 2
+  Adds same product twice from its detail page. Opens cart.
+  Should show 1 row with quantity = 2 (not 2 separate rows).
+
+TC_CM_003 — Cart displays correct name, unit price, quantity, line total
+  Adds 2 different products. Opens cart. Each row should have:
+  name text, price containing Rs/₹, proper quantity.
+
+TC_CM_004 — Updating quantity recalculates line total
+  Adds a product, opens cart. Notes unit price. Changes quantity to 4.
+  Line total should equal unit price × 4.
+
+TC_CM_005 — Cart subtotal equals sum of line totals
+  Adds 3 different products. Sums all line totals programmatically.
+  Compares with the displayed cart subtotal — must match exactly.
+
+TC_CM_006 — Removing a product decrements badge count
+  Adds 2 products. Notes badge count. Removes one.
+  Badge count should decrease.
+
+TC_CM_007 — Empty cart shows empty-state message
+  Removes all items from cart. Expects "empty", "no items", or "start shopping" text.
+
+TC_CM_008 — Cart contents persist after page refresh
+  Adds 2 products, refreshes cart page with page.reload().
+  Same items should remain with correct quantities.
+
+TC_CM_009 — Cart persists after navigating away and returning
+  Adds items, browses to homepage, returns to cart.
+  All previously added items still present.
+
+TC_CM_010 — Quantity cannot be set to zero
+  In cart, tries typing 0 in quantity field. Quantity should revert to 1
+  or validation should prevent 0.
+
+TC_CM_011 — Price column is read-only
+  Checks the price element's HTML tag. Must not be <input> or <textarea>.
+  contenteditable must not be "true".
+
+TC_CM_012 — Clicking product name navigates to detail page
+  In cart, clicks the product name hyperlink. Should open the correct
+  product detail page (name and article number match).
+
+TC_CM_013 — Badge count accurate after multiple add/remove ops
+  Adds 3 products, removes 1, adds 2 more. Badge should show 4.
+  Cart contents verified row by row.
+
+TC_CM_014 — Guest cart retained after logging in
+  Adds 2 items without login. Logs in from cart page.
+  Cart should still show the 2 items after login redirect.
+
+TC_CM_015 — Cart total updates without full page reload
+  Changes quantity in cart using stepper button. Watches for total to
+  update dynamically (AJAX) without full page navigation.
+
+TC_CM_016 — Proceed to Checkout button is present and enabled
+  Opens cart with at least 1 item. Checks the Checkout button is
+  visible, correctly labelled, and enabled (not disabled).
+
+TC_CM_017 — Continue Shopping returns to product listing
+  In cart, clicks "Continue Shopping" button/link.
+  URL should no longer contain 'shoppingcart'.
+
+================================================================================
+REFACTORING & HELPER ARCHITECTURE (May 2026 Refactor)
+================================================================================
+CHANGES MADE:
+  - Created a dedicated helper file: tests/helpers/modules/cart-management.helper.js
+  - Updated tests/cart-management.spec.js to import helpers from this module.
+
+BENEFITS:
+  - Isolation: Changes to Module 6 helpers do not impact other modules or the main `ikea-helpers.js` file.

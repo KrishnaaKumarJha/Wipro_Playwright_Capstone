@@ -1,0 +1,85 @@
+================================================================================
+MODULE 8 — API & NETWORK VALIDATION (15 Test Cases)
+================================================================================
+Uses Playwright's page.on('response'), page.on('request'), and page.route()
+to intercept real HTTP calls made by the IKEA site. Validates request payloads,
+response structure, status codes, auth headers, and performance.
+================================================================================
+
+TC_AP_001 — Product listing API returns HTTP 200 on category load
+  Attaches a response listener BEFORE navigating to Sofas category.
+  Listens for URLs containing 'product', 'plp', 'catalog', 'category'.
+  Captures the first matching response status. Asserts it equals 200.
+
+TC_AP_002 — Product listing response contains required fields
+  Intercepts JSON responses from product listing API.
+  Parses the response JSON and stringifies it.
+  Checks the JSON contains: id/articleNumber, name, price (as keywords).
+
+TC_AP_003 — Cart add-to-bag request contains product ID and quantity
+  Attaches a request listener for POST requests to cart/bag URLs.
+  Navigates to a product, clicks "Add to Bag".
+  Checks the POST body contains product/item/article/quantity keywords.
+
+TC_AP_004 — Cart add-to-bag API returns 200 or 201
+  Listens for POST response to cart/bag URLs when adding a product.
+  Asserts the response status is 200 or 201 (success).
+
+TC_AP_005 — Login POST sends email/password in body, not URL
+  Intercepts POST requests to auth/login endpoints during login.
+  Checks: request body is truthy (credentials in body).
+  Checks: URL does NOT contain the password (not in query string).
+
+TC_AP_006 — Login response sets auth cookie or returns token
+  After successful login, checks browser cookies for auth-related names
+  (auth, token, session, jwt, sid). At least one should exist,
+  OR the login response status should be < 400.
+
+TC_AP_007 — Failed login returns 401 or 400 with error payload
+  Intercepts login POST with wrong password. Captures response status.
+  Asserts status is 400, 401, or 403. Page should show error message.
+
+TC_AP_008 — Search API request includes correct query parameter
+  Intercepts API calls triggered when searching for 'table'.
+  Checks the request URL or body contains the search term 'table'.
+
+TC_AP_009 — Search API response results count matches UI card count
+  Intercepts search response JSON. Extracts totalCount/total/count field.
+  Counts rendered product cards on the page.
+  Asserts API count equals UI card count (for first page ≤24).
+
+TC_AP_010 — Cart fetch on page load returns all previously added items
+  Adds 2 products, then navigates to cart page.
+  Intercepts GET requests to cart/bag URLs.
+  Checks the response JSON contains product data (string length > 10).
+
+TC_AP_011 — Remove-from-cart request contains product identifier
+  Adds a product, opens cart, attaches listener for DELETE/PATCH/PUT/POST
+  to cart URLs. Clicks "Remove". Checks the request was made.
+
+TC_AP_012 — All API responses include Content-Type: application/json
+  Collects Content-Type headers from product, cart, search API responses.
+  Asserts each one contains 'application/json'.
+
+TC_AP_013 — Product listing API response time under 2 seconds
+  Makes 3 consecutive calls to the category page. For each, measures
+  elapsed time from request to first product-data response.
+  All 3 must be under 2000ms.
+
+TC_AP_014 — Checkout order summary API total matches cart subtotal
+  Logs in, adds product, goes to checkout. Intercepts checkout/order
+  API responses. Checks JSON contains total/amount/price fields.
+
+TC_AP_015 — Unauthenticated checkout API returns 401
+  Uses Playwright's APIRequestContext (not browser) to call checkout
+  endpoint WITHOUT auth cookies. Expects 401/403 status or login redirect.
+
+================================================================================
+REFACTORING & HELPER ARCHITECTURE (May 2026 Refactor)
+================================================================================
+CHANGES MADE:
+  - Created a dedicated helper file: tests/helpers/modules/api-network.helper.js
+  - Updated tests/api-network.spec.js to import helpers from this module.
+
+BENEFITS:
+  - Isolation: Changes to Module 8 helpers do not impact other modules or the main `ikea-helpers.js` file.

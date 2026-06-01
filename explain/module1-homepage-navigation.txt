@@ -1,0 +1,256 @@
+================================================================================
+MODULE 1 — HOMEPAGE & NAVIGATION (13 Test Cases)
+================================================================================
+Validates page load performance, navigation correctness, footer links,
+subscription form behaviour, and visual landmark rendering on IKEA India.
+
+URL Under Test: https://www.ikea.com/in/en/
+================================================================================
+
+
+TC_HN_001 — Page load completes within 3 seconds on fresh visit
+--------------------------------------------------------------------------------
+WHAT IT DOES:
+  Measures how long the IKEA homepage takes to fully load (DOMContentLoaded +
+  load events). Also checks for JavaScript console errors.
+
+HOW IT WORKS:
+  1. Records the timestamp before navigating to the homepage.
+  2. Calls page.goto('/', { waitUntil: 'load' }) which waits until the page's
+     'load' event fires (all resources including images fully loaded).
+  3. Calculates elapsed time: (Date.now() - startTime).
+  4. Asserts the load time is under 3000 milliseconds.
+  5. Attaches a console error listener, reloads the page, and asserts zero
+     console errors were captured.
+
+WHY IT MATTERS:
+  Performance is critical for user experience. A page that loads in >3 seconds
+  loses significant user engagement. Console errors indicate broken JavaScript.
+
+
+TC_HN_002 — All primary navigation tabs redirect to correct pages
+--------------------------------------------------------------------------------
+WHAT IT DOES:
+  Clicks each top-level navigation item (Products, Rooms, Offers) and verifies
+  the browser lands on the correct URL.
+
+HOW IT WORKS:
+  1. Loops through an array of nav items with expected URL path segments.
+  2. For each item: navigates back to homepage, finds the nav link using
+     page.getByRole('link', { name: /products/i }), and clicks it.
+  3. Waits for navigation to complete (networkidle).
+  4. Asserts the current URL contains the expected path (e.g., 'products',
+     'rooms', 'offers').
+
+WHY IT MATTERS:
+  Navigation is the backbone of any website. If nav links are broken or point
+  to wrong pages, users cannot access the site's content.
+
+
+TC_HN_003 — IKEA logo click returns user to homepage from any inner page
+--------------------------------------------------------------------------------
+WHAT IT DOES:
+  From an inner page (e.g., Sofas category), clicks the IKEA logo in the header
+  and verifies it takes the user back to the homepage.
+
+HOW IT WORKS:
+  1. Navigates to a category page (/in/en/cat/sofas-fu003/).
+  2. Dismisses any cookie/popup overlays.
+  3. Finds the IKEA logo link in the header using locator:
+     'a[aria-label*="IKEA"], header a[href="/in/en/"]'
+  4. Clicks the logo and waits for navigation.
+  5. Asserts the URL contains '/in/en/' and the page title contains 'ikea'.
+
+WHY IT MATTERS:
+  The logo-as-home-button is a universal UX convention. Users expect clicking
+  the logo to always return them to the homepage.
+
+
+TC_HN_004 — Country/store selector loads and displays Indian stores
+--------------------------------------------------------------------------------
+WHAT IT DOES:
+  Opens the store/country selector in the header and verifies Indian store
+  locations are listed.
+
+HOW IT WORKS:
+  1. Finds the store selector element using multiple locator strategies.
+  2. Clicks it and waits for content to load.
+  3. Reads the page body text and uses a regex to check for Indian city names
+     (Hyderabad, Mumbai, Bengaluru, Delhi, Pune) or the word 'store'.
+
+WHY IT MATTERS:
+  This is a locale-specific test. Since we're testing IKEA India, the store
+  selector must show Indian locations, not US/EU stores.
+
+
+TC_HN_005 — Footer navigation links resolve without 404 errors
+--------------------------------------------------------------------------------
+WHAT IT DOES:
+  Checks that footer links (Privacy Policy, Terms, FAQs, Contact) do not
+  return HTTP 404 errors.
+
+HOW IT WORKS:
+  1. Scrolls to the bottom of the page to reveal the footer.
+  2. Finds footer link elements using page.locator('footer a[href]').
+  3. For each link (up to 5 sampled), makes an HTTP GET request using
+     page.request.get(href) and asserts the status is NOT 404.
+
+WHY IT MATTERS:
+  Broken footer links damage SEO rankings and user trust. Footer links like
+  Privacy Policy are also legally required.
+
+
+TC_HN_006 — Homepage hero banner renders and CTA button is functional
+--------------------------------------------------------------------------------
+WHAT IT DOES:
+  Verifies the hero banner section at the top of the homepage is visible and
+  its call-to-action (CTA) button navigates somewhere valid.
+
+HOW IT WORKS:
+  1. Locates the hero section using CSS selectors (.hero, [data-testid="hero-banner"]).
+  2. Asserts it is visible within 10 seconds (hero images can be large).
+  3. Finds the first link/button inside the hero section.
+  4. Clicks it and waits for navigation.
+  5. Asserts the URL is truthy (valid page loaded).
+
+WHY IT MATTERS:
+  The hero banner is the first thing users see. A broken hero image or
+  non-functional CTA means lost conversions on the most valuable real estate.
+
+
+TC_HN_007 — Newsletter subscription accepts valid email and confirms
+--------------------------------------------------------------------------------
+WHAT IT DOES:
+  Enters a valid email in the footer newsletter subscription form and verifies
+  a success confirmation appears.
+
+HOW IT WORKS:
+  1. Scrolls to the footer.
+  2. Finds the email input field (input[type="email"]).
+  3. Types 'test@example.com' into the field.
+  4. Clicks the submit/subscribe button.
+  5. Waits 2 seconds, then checks the page body for success keywords
+     ('thank', 'success', 'subscribed', 'confirmed').
+
+WHY IT MATTERS:
+  Newsletter subscription is a key marketing channel. The form must accept
+  valid emails and show clear confirmation to the user.
+
+
+TC_HN_008 — Newsletter subscription rejects invalid email format
+--------------------------------------------------------------------------------
+WHAT IT DOES:
+  Enters an invalid email ('notvalid@@ikea') and verifies the form does NOT
+  submit — browser validation should catch it.
+
+HOW IT WORKS:
+  1. Scrolls to footer, finds the email input field.
+  2. Types 'notvalid@@ikea' (double @ is invalid).
+  3. Clicks submit.
+  4. Uses el.validity.valid (HTML5 Constraint Validation API) to check that
+     the browser marked the field as invalid.
+
+WHY IT MATTERS:
+  Form validation prevents garbage data from entering the system. An email
+  field that accepts 'notvalid@@ikea' would corrupt the mailing list.
+
+
+TC_HN_009 — Category shortcut tiles on homepage navigate to correct listings
+--------------------------------------------------------------------------------
+WHAT IT DOES:
+  Clicks category tiles on the homepage (e.g., Sofas, Beds, Storage) and
+  verifies each one navigates to a valid product listing page.
+
+HOW IT WORKS:
+  1. Finds all elements matching 'a[href*="/cat/"]' (category links).
+  2. For the first 3 tiles: navigates home, clicks the tile, waits for load.
+  3. Asserts the URL contains '/in/en/' (still on IKEA India).
+
+WHY IT MATTERS:
+  Category tiles are the primary product discovery path. If they're broken,
+  users cannot browse products by category.
+
+
+TC_HN_010 — Page title and hreflang meta tags are set correctly for India locale
+--------------------------------------------------------------------------------
+WHAT IT DOES:
+  Checks that the HTML <title> contains 'IKEA' and the hreflang meta tags
+  include 'en-in' (English-India).
+
+HOW IT WORKS:
+  1. Reads document.title and asserts it contains 'ikea' (case-insensitive).
+  2. Queries all <link rel="alternate" hreflang="..."> elements.
+  3. Extracts hreflang values and checks that at least one contains 'en-in'.
+  4. Falls back to checking the URL contains '/in/en/' if hreflang is missing.
+
+WHY IT MATTERS:
+  This is an SEO test. Correct hreflang tags tell Google which language/region
+  the page targets. Missing or wrong hreflang hurts search rankings in India.
+
+
+TC_HN_011 — Breadcrumb navigation renders on inner pages and is clickable
+--------------------------------------------------------------------------------
+WHAT IT DOES:
+  Navigates to a category page (Sofas) and verifies the breadcrumb trail
+  is visible (e.g., Home > Products > Sofas) and its links are clickable.
+
+HOW IT WORKS:
+  1. Navigates to /in/en/cat/sofas-fu003/.
+  2. Finds the breadcrumb element using [aria-label="breadcrumb"].
+  3. Asserts it's visible.
+  4. Counts the <a> links inside the breadcrumb and asserts > 0.
+  5. Clicks the first breadcrumb link ("Home") and verifies navigation works.
+
+WHY IT MATTERS:
+  Breadcrumbs help users understand where they are in the site hierarchy
+  and quickly navigate back. They also improve SEO via structured data.
+
+
+TC_HN_012 — Search icon in header opens search bar on click
+--------------------------------------------------------------------------------
+WHAT IT DOES:
+  Clicks the search (magnifier) icon in the header and verifies the search
+  input field becomes visible and focused.
+
+HOW IT WORKS:
+  1. Finds the search icon using [aria-label*="Search"] or similar locators.
+  2. Clicks it.
+  3. Waits 1 second for animation.
+  4. Finds the search input (input[type="search"] or input[name="q"]).
+  5. Asserts the input is visible.
+
+WHY IT MATTERS:
+  Search is the fastest way for users to find products. If the search icon
+  doesn't open the search bar, users are stuck navigating manually.
+
+
+TC_HN_013 — Accessibility: skip-to-content link is present for keyboard users
+--------------------------------------------------------------------------------
+WHAT IT DOES:
+  Presses Tab from the page load to check if a "Skip to content" link appears
+  for keyboard navigation users.
+
+HOW IT WORKS:
+  1. Presses the Tab key once (keyboard.press('Tab')).
+  2. Waits 500ms for the skip link to become visible (it's often visually
+     hidden until focused).
+  3. Counts elements matching a[href="#content"], a[href="#main"], or
+     a:has-text("Skip to content").
+  4. Asserts at least one such element exists in the DOM.
+
+WHY IT MATTERS:
+  WCAG accessibility guidelines require skip-to-content links so keyboard
+  users can bypass repetitive navigation. This is both a legal requirement
+  and best practice for inclusive design.
+
+================================================================================
+REFACTORING & HELPER ARCHITECTURE (May 2026 Refactor)
+================================================================================
+CHANGES MADE:
+  - Created a dedicated helper file: tests/helpers/modules/homepage-navigation.helper.js
+  - Updated tests/homepage-navigation.spec.js to import helpers from this module.
+  - Organized diagnostics: Moved the header DOM inspector utility `dump_header.js` into the `tests/helpers/utilities/` directory to keep the root directory neat and clean.
+
+BENEFITS:
+  - Isolation: Changes to Module 1 helpers do not impact other modules or the main `ikea-helpers.js` file.
+  - Organization: Diagnostic files are grouped logically instead of cluttering the project's root.

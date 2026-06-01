@@ -1,0 +1,84 @@
+================================================================================
+MODULE 2 — AUTHENTICATION & USER ACCOUNT (20 Test Cases)
+================================================================================
+Covers full auth lifecycle: registration, real login POST, session persistence,
+account management, and logout.
+Credentials from .env: TEST_EMAIL, TEST_PASSWORD
+================================================================================
+
+TC_AU_001 — Registration with timestamp-based unique email
+  Fills registration form with testuser_${Date.now()}@mail.com for uniqueness.
+  Submits and checks for account/dashboard/welcome confirmation.
+
+TC_AU_002 — Registration error for already-registered email
+  Uses the pre-existing TEST_EMAIL. Expects "account already exists" error.
+
+TC_AU_003 — Registration validates mandatory fields
+  Submits form with all fields blank. Expects validation errors on each.
+
+TC_AU_004 — Password mismatch blocks registration
+  Enters different Password and Confirm Password values. Expects mismatch error.
+
+TC_AU_005 — Login ACTUALLY submits to IKEA auth (not mocked)
+  Real POST to IKEA's auth endpoint with valid credentials from .env.
+  Checks header shows "My Account" or "Hej" after successful login.
+
+TC_AU_006 — Login fails with correct email but wrong password
+  Uses correct email + 'WrongPassword@999'. Expects error message.
+  Asserts URL still contains 'login' (user stays on login page).
+
+TC_AU_007 — Login fails with unregistered email
+  Uses nonexistent_user_xyz@nowhere.com. Expects generic error (no email enumeration).
+
+TC_AU_008 — Login blocks submission when fields are empty
+  Clicks Sign In with both fields empty. Expects "required" validation.
+
+TC_AU_009 — Password field masks characters
+  Types into password field, reads input type attribute. Asserts type="password".
+
+TC_AU_010 — Session persists after page refresh
+  Logs in, does page.reload(). Checks header still shows account indicator.
+
+TC_AU_011 — Session persists across multiple pages
+  After login, visits Products, Rooms, Offers. Checks account indicator on each.
+
+TC_AU_012 — Logout clears session
+  Logs in, clicks Sign Out from account menu. Checks header shows "Log In" not "My Account".
+
+TC_AU_013 — Profile page without login redirects to login
+  Navigates to /in/en/profile/ without auth. Asserts redirect to login URL.
+
+TC_AU_014 — Wishlist requires authentication
+  Navigates to /in/en/favourites/ without login. Expects login prompt.
+
+TC_AU_015 — Profile shows correct user info
+  Logs in, goes to profile page. Checks displayed data contains the email username.
+
+TC_AU_016 — User can update display name
+  Logs in, changes First Name field, clicks Save. Checks for success confirmation.
+
+TC_AU_017 — Order history accessible after login
+  Navigates to /in/en/profile/orders/. Checks for order/purchase/empty state text.
+
+TC_AU_018 — Saved addresses page loads
+  Navigates to /in/en/profile/addresses/. Checks for address-related content.
+
+TC_AU_019 — Concurrent session detection
+  Logs in on Tab A, logs in on Tab B (new page in same context), refreshes Tab A.
+  Checks Tab A reflects current session state.
+
+TC_AU_020 — Remember Me persists after browser restart
+  Logs in with Remember Me checked. Saves storageState, creates new context with it.
+  Checks user is still logged in on the new context (simulated browser restart).
+
+================================================================================
+REFACTORING & HELPER ARCHITECTURE (May 2026 Refactor)
+================================================================================
+CHANGES MADE:
+  - Created a dedicated helper file: tests/helpers/modules/authentication.helper.js
+  - Updated tests/authentication.spec.js to import helpers from this module.
+  - Organized diagnostics: Moved `fix_auth_tests.js`, `fix_auth_tests_2.js`, and `test_login_wait.js` into the `tests/helpers/utilities/` directory to keep the root clean.
+
+BENEFITS:
+  - Isolation: Changes to Module 2 helpers do not impact other modules or the main `ikea-helpers.js` file.
+  - Organization: Diagnostic files are grouped logically instead of cluttering the project's root.

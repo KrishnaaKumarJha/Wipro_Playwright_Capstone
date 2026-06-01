@@ -1,0 +1,66 @@
+================================================================================
+MODULE 9 — RESPONSIVE & CROSS-BROWSER UI (10 Test Cases)
+================================================================================
+Validates layout integrity across mobile, tablet, and desktop viewports and
+consistent functionality across Chrome, Firefox, and WebKit (Safari).
+================================================================================
+
+TC_RU_001 — Homepage fully usable at 375x667 mobile viewport
+  Creates a new browser context with viewport { width: 375, height: 667 }.
+  Navigates to homepage. Checks:
+  1. No horizontal overflow (scrollWidth ≤ innerWidth)
+  2. Content is readable (body text length > 100)
+  3. Images scale proportionally (width ≤ 375px)
+
+TC_RU_002 — Navigation collapses to hamburger on mobile
+  At 375px viewport, checks that a hamburger/menu icon is visible.
+  Clicks it and verifies a navigation drawer opens (nav element visible).
+
+TC_RU_003 — Product listing reflows to single/two-column on mobile
+  Opens Sofas category at 375px viewport. Checks that product cards
+  don't overflow the screen (card right edge ≤ 380px with tolerance).
+
+TC_RU_004 — Cart page fully usable on tablet (768x1024)
+  Creates tablet context (768x1024). Adds 2 products, opens cart.
+  Checks: Proceed to Checkout button visible, no horizontal overflow.
+
+TC_RU_005 — Checkout address form functional on mobile
+  At 375px viewport, logs in, adds product, goes to checkout.
+  Checks all form fields (text, tel, email) have bounding boxes within
+  the viewport (not hidden off-screen).
+
+TC_RU_006 — No horizontal scrollbar on any main page at mobile viewport
+  At 375px viewport, visits 3 pages: homepage, category, cart.
+  For each, checks scrollWidth ≤ innerWidth (no horizontal overflow).
+
+TC_RU_007 — Core checkout flow completes in Firefox
+  SKIPPED on non-Firefox browsers (test.skip(browserName !== 'firefox')).
+  Runs the cart-to-checkout flow in Firefox. Checks:
+  1. Checkout page loads with delivery/address content
+  2. No JS errors (pageerror listener)
+
+TC_RU_008 — Core checkout flow completes in WebKit
+  SKIPPED on non-WebKit browsers. Same flow as TC_RU_007 but in WebKit
+  (Safari engine). Verifies checkout renders correctly.
+
+TC_RU_009 — Login and session tests pass in Firefox
+  SKIPPED on non-Firefox. In Firefox:
+  1. Logs in — checks session works
+  2. Navigates to another page — session persists
+  3. Logs out — session cleared
+  Tests Firefox-specific cookie handling.
+
+TC_RU_010 — Touch target minimum size (44x44px) met for primary CTAs
+  At 375px mobile viewport, finds primary CTA buttons (Login, Cart icon).
+  Checks each button's bounding box is ≥ 44x44 pixels.
+  This follows Apple/Google touch target accessibility guidelines.
+
+================================================================================
+REFACTORING & HELPER ARCHITECTURE (May 2026 Refactor)
+================================================================================
+CHANGES MADE:
+  - Created a dedicated helper file: tests/helpers/modules/responsive-crossbrowser.helper.js
+  - Updated tests/responsive-crossbrowser.spec.js to import helpers from this module.
+
+BENEFITS:
+  - Isolation: Changes to Module 9 helpers do not impact other modules or the main `ikea-helpers.js` file.
