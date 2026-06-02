@@ -3,15 +3,7 @@ import { test, expect } from '@playwright/test';
 import { dismissCookieAndPopups, loginWithTestAccount, addProductToCart, handleTurnstileGracefully } from './helpers/modules/responsive-crossbrowser.helper.js';
 
 async function gotoResiliently(page, url, timeout = 30000) {
-  try {
-    await page.goto(url, { timeout, waitUntil: 'domcontentloaded' });
-  } catch (e) {
-    if (e.name === 'TimeoutError' || e.message.includes('timeout') || e.message.includes('navigation')) {
-      test.skip(true, `Dynamic CDN/bot challenge blocked navigation to: ${url}`);
-    } else {
-      throw e;
-    }
-  }
+  await page.goto(url, { timeout, waitUntil: 'domcontentloaded' });
 }
 
 test.describe('Module 9 — Responsive & Cross-Browser UI', () => {

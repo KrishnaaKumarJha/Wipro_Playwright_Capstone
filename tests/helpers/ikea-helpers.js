@@ -67,6 +67,7 @@ export async function loginWithTestAccount(page) {
   const password = process.env.TEST_PASSWORD || 'Test@12345';
 
   await page.goto('/in/en/profile/login/');
+  await handleTurnstileGracefully(page);
   await dismissCookieAndPopups(page);
 
   const continueBtn = page.getByRole('button', { name: /continue/i }).first();
@@ -77,6 +78,8 @@ export async function loginWithTestAccount(page) {
   await page.getByLabel(/password/i).fill(password).catch(() => {});
 
   await continueBtn.click({ force: true });
+  await page.waitForTimeout(1000);
+  await handleTurnstileGracefully(page);
 
   // Wait for navigation after login
   await page.waitForLoadState('domcontentloaded').catch(() => {});
@@ -154,9 +157,6 @@ export async function addProductToCart(page, category = 'cat/sofas-fu003/') {
   
   // Click Add to Bag
   const addBtn = page.getByRole('button', { name: /add to bag|add to cart/i }).first();
-  if (!(await addBtn.isVisible({ timeout: 5000 }).catch(() => false))) {
-    test.skip(true, 'Add to Bag button not visible — page blocked by bot challenge or out of stock');
-  }
   await addBtn.scrollIntoViewIfNeeded().catch(() => {});
   await addBtn.click({ force: true }).catch(() => addBtn.evaluate(el => el.click()));
   
@@ -225,21 +225,13 @@ export function parsePriceText(priceText) {
  * @param {import('@playwright/test').Page} page
  */
 export async function handleTurnstileGracefully(page) {
-  let shouldSkip = false;
   try {
     const body = await page.textContent('body').catch(() => '');
     if (/refresh automatically|just a moment|verifying/i.test(body || '')) {
       await page.locator('text="The page will refresh automatically"').waitFor({ state: 'hidden', timeout: 25000 }).catch(() => {});
-      const body2 = await page.textContent('body').catch(() => '');
-      if (/refresh automatically|just a moment|verifying/i.test(body2 || '')) {
-        shouldSkip = true;
-      }
     }
   } catch {
     // Safe to ignore if outside test context
-  }
-  if (shouldSkip) {
-    test.skip(true, 'Turnstile/Akamai bot challenge intercepted the page');
   }
 }
 

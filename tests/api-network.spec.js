@@ -179,9 +179,6 @@ test.describe('Module 8 — API & Network Validation', () => {
     }
     // Page should show error
     const body = await page.textContent('body') || '';
-    if (/refresh automatically|just a moment|verifying|turnstile|cloudflare|akamai/i.test(body)) {
-      test.skip(true, 'Turnstile/Akamai bot challenge intercepted the failed login response');
-    }
     expect(/invalid|error|incorrect|wrong/i.test(body)).toBeTruthy();
   });
 

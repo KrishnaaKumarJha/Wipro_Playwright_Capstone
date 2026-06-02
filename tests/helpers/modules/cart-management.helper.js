@@ -24,10 +24,6 @@ export async function handleTurnstileGracefully(page) {
   const body = await page.textContent('body').catch(() => '');
   if (/refresh automatically|just a moment|verifying/i.test(body || '')) {
     await page.locator('text="The page will refresh automatically"').waitFor({ state: 'hidden', timeout: 25000 }).catch(() => {});
-    const body2 = await page.textContent('body').catch(() => '');
-    if (/refresh automatically|just a moment|verifying/i.test(body2 || '')) {
-      test.skip(true, 'Turnstile/Akamai bot challenge intercepted the page');
-    }
   }
 }
 

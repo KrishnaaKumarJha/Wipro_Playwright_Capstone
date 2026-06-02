@@ -85,6 +85,34 @@ npx playwright test
 
 ---
 
+# Allure Reports
+
+The framework is pre-configured with Allure Reporting. To generate and view the test execution reports locally:
+
+### Prerequisites
+- **Java (JDK/JRE 8 or higher)** must be installed on your local machine and configured in your system `PATH` variable. Allure Commandline requires Java to parse and generate HTML reports.
+
+### 1. Run Tests (Generates results)
+Running the tests automatically creates or updates the raw report data in the `allure-results` directory:
+```bash
+npx playwright test
+```
+
+### 2. Generate HTML Report
+Compile the raw results into a shareable HTML report:
+```bash
+npm run allure:generate
+```
+This cleans the previous report and places the new one under `allure-report/`.
+
+### 3. Open Report in Browser
+Launch a local web server to open and view the report in your default browser:
+```bash
+npm run allure:open
+```
+
+---
+
 # Supported Browsers
 
 - Chromium
