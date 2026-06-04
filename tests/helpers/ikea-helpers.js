@@ -77,6 +77,7 @@ export async function loginWithTestAccount(page) {
   await page.getByLabel(/email/i).fill(email).catch(() => {});
   await page.getByLabel(/password/i).fill(password).catch(() => {});
 
+  await continueBtn.scrollIntoViewIfNeeded().catch(() => {});
   await continueBtn.click({ force: true });
   await page.waitForTimeout(1000);
   await handleTurnstileGracefully(page);
