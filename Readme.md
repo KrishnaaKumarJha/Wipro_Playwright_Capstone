@@ -2,74 +2,143 @@
 
 ## Project Overview
 
-Enterprise-level frontend automation framework developed using Playwright and JavaScript for the IKEA India website.
+Enterprise-grade frontend automation framework developed using **Playwright** and **JavaScript** for the IKEA India website.
 
-The framework covers:
+The framework follows industry-standard automation practices and provides comprehensive coverage for core user journeys, UI validations, search workflows, responsive design verification, and advanced testing enhancements.
+
+### Key Coverage Areas
+
 - UI Automation
-- Search & Filters
-- Product Validations
-- Cart Functionality
-- Session Handling
+- Search & Filter Validation
+- Product Verification
+- Cart Functionality Testing
+- Responsive UI Validation
 - API Validation
-- Cross Browser Testing
-- Responsive Testing
+- Session Management Testing
+- Cross-Browser Testing
 
 ---
 
-# Website Under Test
+## Website Under Test
 
 https://www.ikea.com/in/en/
 
 ---
 
-# Technology Stack
+## Technology Stack
 
 - Playwright
-- JavaScript
+- JavaScript (ES6+)
 - Node.js
 - Allure Reports
 - Git & GitHub
-- VS Code
+- Visual Studio Code
 
 ---
 
-# Services Covered
+## Core Automation Modules
 
-1. Homepage & Navigation
-2. Authentication UI Validation
-3. Search Functionality
-4. Product Listing & Categories
-5. Filters & Sorting
-6. Product Details
-7. Cart / Bag Functionality
-8. API & Session Validation
-9. Responsive UI Validation
+### Module 1 – Homepage & Navigation
+
+- Homepage validation
+- Header and footer verification
+- Navigation menu testing
+- Category navigation validation
+
+### Module 2 – Authentication UI Validation
+
+- Login/Register popup validation
+- Form field verification
+- Error message validation
+- Authentication workflow checks
+
+### Module 3 – Search Functionality
+
+- Product search validation
+- Search suggestions verification
+- Search result validations
+- Invalid search scenarios
+
+### Module 4 – Product Listing & Categories
+
+- Category page validation
+- Product listing verification
+- Product information validation
+- Category navigation testing
+
+### Module 5 – Filters & Sorting
+
+- Filter functionality validation
+- Multiple filter combinations
+- Sorting options verification
+- Search refinement testing
+
+### Module 6 – Responsive UI Validation
+
+- Mobile viewport testing
+- Tablet viewport testing
+- Desktop viewport testing
+- Responsive layout verification
+- UI consistency validation across devices
+
 ---
 
-# Framework Features
+## Add-On Enhancement Modules
 
-- Page Object Model (POM)
+### Module 7 – Product Details Validation
+
+- Product detail page verification
+- Product specifications validation
+- Product image validation
+- Price and availability checks
+
+### Module 8 – Cart / Bag Functionality
+
+- Add-to-cart validation
+- Cart updates and modifications
+- Quantity management
+- Cart persistence testing
+
+### Module 9 – API & Session Validation
+
+- API response verification
+- Network request validation
+- Session persistence testing
+- Browser storage validation
+
+---
+
+## Framework Features
+
+- Page Object Model (POM) Architecture
+- Reusable Components
 - Assertions & Validations
 - Screenshots on Failure
-- Cross Browser Testing
-- Parallel Execution
+- Cross-Browser Execution
+- Parallel Test Execution
 - API & Network Validation
 - Session Persistence Testing
-- Allure Reporting
+- Responsive UI Testing
+- Allure Reporting Integration
+- Scalable and Maintainable Framework Design
 
 ---
 
-# Estimated Test Coverage
+## Estimated Test Coverage
 
-125-130 Automated Test Cases
+**125–130 Automated Test Cases**
 
 ---
 
-# Installation
+## Installation
+
+Install project dependencies:
 
 ```bash
 npm install
 ```
+
+Install Playwright browsers:
 
 ```bash
 npx playwright install
@@ -77,43 +146,58 @@ npx playwright install
 
 ---
 
-# Run Tests
+## Test Execution
+
+Run all test suites:
 
 ```bash
 npx playwright test
+```
+
+Run tests in headed mode:
+
+```bash
+npx playwright test --headed
+```
+
+Run tests on a specific browser:
+
+```bash
+npx playwright test --project=chromium
 ```
 
 ---
 
-# Allure Reports
+## Allure Reporting
 
-The framework is pre-configured with Allure Reporting. To generate and view the test execution reports locally:
+The framework is pre-configured with Allure Reporting for detailed test execution analysis.
 
 ### Prerequisites
-- **Java (JDK/JRE 8 or higher)** must be installed on your local machine and configured in your system `PATH` variable. Allure Commandline requires Java to parse and generate HTML reports.
 
-### 1. Run Tests (Generates results)
-Running the tests automatically creates or updates the raw report data in the `allure-results` directory:
+- Java (JDK/JRE 8 or above) installed and configured in the system PATH.
+- Allure Commandline installed locally.
+
+### Generate Test Results
+
 ```bash
 npx playwright test
 ```
 
-### 2. Generate HTML Report
-Compile the raw results into a shareable HTML report:
+### Generate HTML Report
+
 ```bash
 npm run allure:generate
 ```
-This cleans the previous report and places the new one under `allure-report/`.
 
-### 3. Open Report in Browser
-Launch a local web server to open and view the report in your default browser:
+### Open Report
+
 ```bash
 npm run allure:open
 ```
 
 ---
 
-# Supported Browsers
+## Supported Browsers
 
 - Chromium
 - Firefox
@@ -121,5 +205,26 @@ npm run allure:open
 
 ---
 
-# Author
-## Krishna Kumar Jha
+## Project Architecture
+
+```text
+project-root/
+│
+├── pages/
+├── tests/
+├── fixtures/
+├── utils/
+├── test-data/
+├── playwright.config.js
+├── package.json
+├── allure-results/
+└── allure-report/
+```
+
+---
+
+## Author
+
+### Krishna Kumar Jha
+
+Playwright Automation Engineer | QA Automation Enthusiast
